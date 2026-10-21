@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+reviews:
+  profile: 'chill'
+
+  auto_review:
+    enabled: true
+    base_branches:
+      - '^main$'
+      - '^dev$'
+
+  path_filters:
+    - '!node_modules/**'
+    - '!dist/**'
+    - 'src/**/*.js'
+    - 'src/**/*.jsx'
+    - 'src/**/*.css'
+
+  tools:
+    eslint:
+      enabled: true
+
+chat:
+  auto_reply: true
