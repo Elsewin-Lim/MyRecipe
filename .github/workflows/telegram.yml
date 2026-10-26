@@ -27,6 +27,12 @@ jobs:
 
     steps:
       # Git Push / Commit Notification
+      - name: Calculate Commit Count
+        if: github.event_name == 'push'
+        id: commits
+        run: |
+          echo "count=$(jq '.commits | length' "$GITHUB_EVENT_PATH")" >> "$GITHUB_OUTPUT"
+
       - name: Send Git Commit to Telegram
         if: github.event_name == 'push'
         uses: appleboy/telegram-action@v1
@@ -38,11 +44,11 @@ jobs:
             🚀 <b>New Push to Repository</b>
 
             📦 <b>Repository:</b>
-            <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
+            <a href="https://github.com/${{ github.repository }}">Open Repository</a>
 
             🌿 <b>Branch:</b> ${{ github.ref_name }}
             👤 <b>Author:</b> ${{ github.actor }}
-            🔢 <b>Commits pushed:</b> ${{ github.event.size }}
+            🔢 <b>Commits pushed:</b> ${{ steps.commits.outputs.count }}
 
             📝 <b>Latest Commit Message:</b>
             ${{ github.event.head_commit.message || 'No commit message available' }}
@@ -50,11 +56,11 @@ jobs:
             🔑 <b>Commit SHA:</b>
             <code>${{ github.sha }}</code>
 
-            🔗 <a href="https://github.com/${{ github.repository }}/commit/${{ github.sha }}">View Commit Changes</a>
+            🔗 <a href="https://github.com/${{ github.repository }}/commit/${{ github.sha }}">View This Commit</a>
 
             📋 <a href="${{ github.event.compare }}">View All Changes in This Push</a>
 
-            📚 <a href="https://github.com/${{ github.repository }}/commits/${{ github.ref_name }}">View Branch History</a>
+            📚 <a href="https://github.com/${{ github.repository }}/commits/${{ github.ref_name }}">View Branch Commit History</a>
 
       # CodeRabbit PR Review
       - name: Send CodeRabbit Review to Telegram
@@ -70,7 +76,7 @@ jobs:
             🐰 <b>CodeRabbit AI Review Completed</b>
 
             📦 <b>Repository:</b>
-            <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
+            <a href="https://github.com/${{ github.repository }}">Open Repository</a>
 
             🔀 <b>Pull Request:</b>
             <a href="${{ github.event.pull_request.html_url }}">#${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}</a>
@@ -100,7 +106,7 @@ jobs:
             🐰 <b>CodeRabbit Inline Review Comment</b>
 
             📦 <b>Repository:</b>
-            <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
+            <a href="https://github.com/${{ github.repository }}">Open Repository</a>
 
             🔀 <b>Pull Request:</b>
             <a href="${{ github.event.pull_request.html_url }}">#${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}</a>
@@ -113,7 +119,7 @@ jobs:
 
             🔗 <a href="${{ github.event.comment.html_url }}">View Inline Comment</a>
 
-      # SCENARIO D: CodeRabbit General PR Comment
+      # CodeRabbit General PR Comment
       - name: Send CodeRabbit General Comment to Telegram
         if: >-
           github.event_name == 'issue_comment' &&
@@ -128,7 +134,7 @@ jobs:
             🐰 <b>CodeRabbit Pull Request Comment</b>
 
             📦 <b>Repository:</b>
-            <a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a>
+            <a href="https://github.com/${{ github.repository }}">Open Repository</a>
 
             🔀 <b>Pull Request:</b>
             <a href="${{ github.event.issue.html_url }}">#${{ github.event.issue.number }} - ${{ github.event.issue.title }}</a>
@@ -139,4 +145,3 @@ jobs:
             ${{ github.event.comment.body }}
 
             🔗 <a href="${{ github.event.comment.html_url }}">View Comment</a>
-
