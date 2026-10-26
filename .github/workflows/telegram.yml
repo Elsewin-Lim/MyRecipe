@@ -1,0 +1,54 @@
+name: Send Commits & CodeRabbit to Telegram
+
+on:
+  push:
+    branches:
+      - dev      # Trigger when code is pushed to dev
+      - main     
+  pull_request_review:
+    types: [submitted] # Triggers when any PR review is submitted
+
+jobs:
+  notify-telegram:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # SCENARIO A: Handle Git Push / Commit Messages
+      - name: Send Git Commit to Telegram
+        if: github.event_name == 'push'
+        uses: appleboy/telegram-action@v1
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
+          message: |
+            🚀 **New Push to Repository**
+            *Repository:* ${{ github.repository }}
+            *Branch:* ${{ github.ref_name }}
+            *Author:* ${{ github.actor }}
+            
+            📝 **Commit Message:**
+            > ${{ github.event.head_commit.message }}
+            
+            [View Commit Changes](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+
+      # SCENARIO B: Handle CodeRabbit AI Review (on dev or any PR)
+      - name: Send CodeRabbit Review to Telegram
+        if: github.event_name == 'pull_request_review' && contains(github.event.review.user.login, 'coderabbit')
+        uses: appleboy/telegram-action@v1
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          format: markdown
+          message: |
+            🐰 **CodeRabbit AI Review Completed**
+            *Target Branch:* ${{ github.event.pull_request.base.ref }}
+            *PR:* #${{ github.event.pull_request.number }} - ${{ github.event.pull_request.title }}
+            *Review State:* ${{ github.event.review.state }}
+            
+            💬 **Review Summary / Comments:**
+            ${{ github.event.review.body }}
+            
+            [View Pull Request Review](${{ github.event.review.html_url }})
