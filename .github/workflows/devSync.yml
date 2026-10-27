@@ -10,22 +10,19 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
         contents: write
+        pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Push main to dev
-        run: |
-          git config --global user.name "GitHub Actions Bot"
-          git config --global user.email "actions@github.com"
-          
-          # Checkout the dev branch
-          git checkout dev
-          
-          # Merge changes from main into dev
-          git merge origin/main --no-edit
-          
-          # Push the updated dev branch back to GitHub
-          git push origin dev
+      - name: Create Pull Request to Sync with main
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: auto-sync-main-to-dev
+          base: dev
+          branch-suffix: timestamp
+          title: "🔄 Automated Sync: Main -> Dev"
+          body: "This is an automatic Pull Request to keep the `dev` branch synchronized with the latest changes from `main`."
