@@ -26,12 +26,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Git Push / Commit Notification
-      - name: Calculate Commit Count
-        if: github.event_name == 'push'
-        id: commits
-        run: |
-          echo "count=$(jq '.commits | length' "$GITHUB_EVENT_PATH")" >> "$GITHUB_OUTPUT"
 
       - name: Send Git Commit to Telegram
         if: github.event_name == 'push'
@@ -48,7 +42,6 @@ jobs:
 
             🌿 <b>Branch:</b> ${{ github.ref_name }}
             👤 <b>Author:</b> ${{ github.actor }}
-            🔢 <b>Commits pushed:</b> ${{ steps.commits.outputs.count }}
 
             📝 <b>Latest Commit Message:</b>
             ${{ github.event.head_commit.message || 'No commit message available' }}
@@ -57,10 +50,6 @@ jobs:
             <code>${{ github.sha }}</code>
 
             🔗 <a href="https://github.com/${{ github.repository }}/commit/${{ github.sha }}">View This Commit</a>
-
-            📋 <a href="${{ github.event.compare }}">View All Changes in This Push</a>
-
-            📚 <a href="https://github.com/${{ github.repository }}/commits/${{ github.ref_name }}">View Branch Commit History</a>
 
       # CodeRabbit PR Review
       - name: Send CodeRabbit Review to Telegram
