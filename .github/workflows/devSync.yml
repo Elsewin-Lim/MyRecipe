@@ -17,7 +17,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Create sync PR and enable auto-merge
+      - name: Create sync PR
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -26,12 +26,11 @@ jobs:
             exit 0
           fi
 
-          number=$(gh pr list --base dev --head main --state open --json number --jq '.[0].number')
-          if [ -z "$number" ]; then
-            gh pr create --base dev --head main \
-              --title "🔄 Automated Sync: Main -> Dev" \
-              --body "Automatic sync of \`main\` into \`dev\`. Merge with a merge commit so history stays in sync."
-            number=$(gh pr list --base dev --head main --state open --json number --jq '.[0].number')
+          if [ -n "$(gh pr list --base dev --head main --state open --json number --jq '.[0].number')" ]; then
+            echo "sync PR is already open"
+            exit 0
           fi
 
-          gh pr merge "$number" --auto --merge
+          gh pr create --base dev --head main \
+            --title "🔄 Automated Sync: Main -> Dev" \
+            --body "Automatic sync of \`main\` into \`dev\`. Review, approve, and merge with the merge commit button."
