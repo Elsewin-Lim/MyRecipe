@@ -1,0 +1,28 @@
+import React from 'react';
+import '../Book.css';
+const FrontCover = React.forwardRef((props, ref) => {
+  const {
+    className: libraryClassName,
+    style: libraryStyle,
+    ...restOfProps
+  } = props;
+  return (
+    <div
+      {...restOfProps}
+      ref={ref}
+      className={`${libraryClassName || ''}`}
+      style={{ ...libraryStyle }}
+    >
+      <video
+        className="Cover"
+        src="/Cover.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+    </div>
+  );
+});
+
+export default FrontCover;
