@@ -38,7 +38,7 @@ jobs:
             🚀 <b>New Push to Repository</b>
 
             📦 <b>Repository:</b>
-            <a href="https://github.com/${{ github.repository }}">Open Repository</a>
+            Open Repository: https://github.com/${{ github.repository }}
 
             🌿 <b>Branch:</b> ${{ github.ref_name }}
             👤 <b>Author:</b> ${{ github.actor }}
@@ -49,7 +49,7 @@ jobs:
             🔑 <b>Commit SHA:</b>
             <code>${{ github.sha }}</code>
 
-            🔗 <a href="https://github.com/${{ github.repository }}/commit/${{ github.sha }}">View This Commit</a>
+            🔗 View This Commit: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
 
       # CodeRabbit PR Review
       - name: Send CodeRabbit Review to Telegram

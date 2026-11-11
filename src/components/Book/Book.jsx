@@ -1,15 +1,8 @@
 import HTMLFlipBook from 'react-pageflip-enhanced';
-import React from 'react';
 import './Book.css';
-const Page = React.forwardRef((props, ref) => {
-  return (
-    <div className="Page" ref={ref}>
-      <h1>Page Header</h1>
-      <p>{props.children}</p>
-      <p>Page number: {props.number}</p>
-    </div>
-  );
-});
+import Page from './Pages/Pages';
+import FrontCover from './Covers/FrontCover';
+import BackCover from './Covers/BackCover';
 
 function MyBook() {
   return (
@@ -20,10 +13,14 @@ function MyBook() {
       showCover={true}
       size="stretch"
     >
-      <Page number="1">Page text</Page>
-      <Page number="2">Page text</Page>
-      <Page number="3">Page text</Page>
-      <Page number="4">Page text</Page>
+      <FrontCover />
+      <Page number={0} />
+      <Page number={1}>Page text</Page>
+      <Page number={2}>Page text</Page>
+      <Page number={3}>Page text</Page>
+      <Page number={4}>Page text</Page>
+      <Page number={5} />
+      <BackCover />
     </HTMLFlipBook>
   );
 }
