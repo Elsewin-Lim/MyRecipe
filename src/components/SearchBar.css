@@ -1,0 +1,13 @@
+/* Style the recipe search input */
+.search-bar {
+  margin: 20px;
+}
+
+.search-bar input {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+}
