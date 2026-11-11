@@ -1,0 +1,40 @@
+.shoppingListPage {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+  text-align: left;
+}
+
+.shoppingListPage form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 400px;
+  margin-bottom: 24px;
+}
+
+.shoppingListPage ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.shoppingListPage li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.shoppingListPage li label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.shoppingListPage li input[type='number'] {
+  width: 80px;
+}
