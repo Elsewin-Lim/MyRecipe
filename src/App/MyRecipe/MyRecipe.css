@@ -1,0 +1,20 @@
+.landingPage {
+  position: relative;
+  display: flex;
+  width: 100%;
+  margin: 0 auto;
+  /* align-items: center; */
+  justify-content: center;
+}
+
+.bookArea {
+  position: relative;
+  width: min(90%, 125svh);
+  container-type: inline-size;
+}
+
+@media (orientation: portrait) {
+  .bookArea {
+    width: min(90%, 70svh);
+  }
+}

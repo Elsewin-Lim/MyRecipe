@@ -1,0 +1,40 @@
+.Page {
+  position: relative;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.page-left {
+  background-image:
+    linear-gradient(
+      to left,
+      rgba(0, 0, 0, 0.25) 0%,
+      rgba(0, 0, 0, 0.08) 4%,
+      rgba(0, 0, 0, 0) 12%
+    ),
+    url(/Page.webp);
+}
+
+/* 📄 RIGHT-HAND PAGES: Stacks the shadow gradient ON TOP of your Page texture */
+.page-right {
+  background-image:
+    linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.28) 0%,
+      rgba(0, 0, 0, 0.08) 4%,
+      rgba(0, 0, 0, 0) 12%
+    ),
+    url(/Page.webp);
+}
+
+/* A sharp 1px dark line directly down the very center slit */
+.page-left::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 2;
+}
