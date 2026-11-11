@@ -126,4 +126,10 @@ h1 {
   .recipe-list {
     grid-template-columns: 1fr;
   }
+.HomeNav {
+  padding: 1rem;
+  background: #222;
+  color: #fff;
+  display: flex;
+  gap: 1rem;
 }

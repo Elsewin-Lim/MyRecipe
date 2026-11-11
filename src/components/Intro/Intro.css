@@ -1,0 +1,14 @@
+.Intro {
+  position: absolute;
+  top: 50%;
+  left: clamp(1.5rem, 5%, 4rem);
+  transform: translateY(-50%);
+  z-index: 0;
+  max-width: 35%;
+  text-align: left;
+  pointer-events: none;
+}
+
+.Intro h1 {
+  font-size: 5cqw;
+}

@@ -5,6 +5,9 @@ import SearchBar from './components/SearchBar';
 import CategoryFilter from './components/CategoryFilter';
 import IngredientFilter from './components/IngredientFilter';
 import RecipeForm from './components/RecipeForm';
+import { BrowserRouter } from 'react-router-dom';
+import AppRoutes from './router/AppRouter';
+import Nav from './components/Nav/Nav';
 
 function App() {
   const [recipes, setRecipes] = useState([
@@ -107,37 +110,44 @@ function App() {
 
   return (
     <>
-      <h1>MyRecipes</h1>
+      <BrowserRouter>
+        {/* Navigation bar using Link components */}
+        <Nav />
+        <h1>MyRecipes</h1>
 
-      {/* display search bar */}
-      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        {/* display search bar */}
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-      {/* display filter */}
-      <CategoryFilter
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-      />
+        {/* display filter */}
+        <CategoryFilter
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
 
-      {/* display ingredient filter */}
-      <IngredientFilter
-        ingredients={ingredients}
-        selectedIngredient={selectedIngredient}
-        setSelectedIngredient={setSelectedIngredient}
-      />
+        {/* display ingredient filter */}
+        <IngredientFilter
+          ingredients={ingredients}
+          selectedIngredient={selectedIngredient}
+          setSelectedIngredient={setSelectedIngredient}
+        />
 
-      {/* Display add recipe form */}
-      <RecipeForm
-        onAddRecipe={addRecipe}
-        editingRecipe={editingRecipe}
-        onUpdateRecipe={updateRecipe}
-      />
+        {/* Display add recipe form */}
+        <RecipeForm
+          onAddRecipe={addRecipe}
+          editingRecipe={editingRecipe}
+          onUpdateRecipe={updateRecipe}
+        />
 
-      {/* display list sample food */}
-      <RecipeList
-        recipes={filteredRecipes}
-        onDeleteRecipe={deleteRecipe}
-        onEditRecipe={editRecipe}
-      />
+        {/* display list sample food */}
+        <RecipeList
+          recipes={filteredRecipes}
+          onDeleteRecipe={deleteRecipe}
+          onEditRecipe={editRecipe}
+        />
+        <main>
+          <AppRoutes />
+        </main>
+      </BrowserRouter>
     </>
   );
 }
