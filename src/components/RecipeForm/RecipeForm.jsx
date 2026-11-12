@@ -1,10 +1,23 @@
 import { useState } from 'react';
 
-function RecipeForm({ onAddRecipe }) {
-  const [title, setTitle] = useState('');
-  const [category, setCategory] = useState('Breakfast');
-  const [cookingTime, setCookingTime] = useState('');
-  const [ingredients, setIngredients] = useState('');
+function RecipeForm({
+  onAddRecipe,
+  editingRecipe,
+  onUpdateRecipe,
+  onCancelEdit,
+}) {
+  const isEditing = Boolean(editingRecipe);
+
+  const [title, setTitle] = useState(editingRecipe?.title ?? '');
+  const [category, setCategory] = useState(
+    editingRecipe?.category ?? 'Breakfast'
+  );
+  const [cookingTime, setCookingTime] = useState(
+    editingRecipe ? String(editingRecipe.cookingTime) : ''
+  );
+  const [ingredients, setIngredients] = useState(
+    editingRecipe ? editingRecipe.ingredients.join(', ') : ''
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,15 +31,19 @@ function RecipeForm({ onAddRecipe }) {
       .map((item) => item.trim())
       .filter((item) => item !== '');
 
-    const newRecipe = {
-      id: Date.now(),
+    const recipe = {
       title: title.trim(),
       category,
       cookingTime: Number(cookingTime),
       ingredients: ingredientList,
     };
 
-    onAddRecipe(newRecipe);
+    if (isEditing) {
+      onUpdateRecipe({ ...editingRecipe, ...recipe });
+      return;
+    }
+
+    onAddRecipe({ id: Date.now(), ...recipe });
 
     setTitle('');
     setCategory('Breakfast');
@@ -36,7 +53,7 @@ function RecipeForm({ onAddRecipe }) {
 
   return (
     <form onSubmit={handleSubmit} className="add-recipe-form">
-      <h2>Add New Recipe</h2>
+      <h2>{isEditing ? 'Edit Recipe' : 'Add New Recipe'}</h2>
 
       <input
         type="text"
@@ -70,7 +87,15 @@ function RecipeForm({ onAddRecipe }) {
         required
       />
 
-      <button type="submit">Add Recipe</button>
+      <button type="submit">
+        {isEditing ? 'Update Recipe' : 'Add Recipe'}
+      </button>
+
+      {isEditing && (
+        <button type="button" className="cancel-button" onClick={onCancelEdit}>
+          Cancel
+        </button>
+      )}
     </form>
   );
 }

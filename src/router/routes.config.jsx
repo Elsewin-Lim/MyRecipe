@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router';
 
 const pages = import.meta.glob('../App/**/*.jsx', { eager: true });
 
@@ -28,5 +28,5 @@ export const routeList = Object.keys(pages)
 export const customRoutes = [
   { path: '/', element: <Navigate to="/MyRecipe" replace /> },
   ...routeList,
-  { path: '*', element: <div>Page Not Found🥲</div> },
+  { path: '*', element: <div>Page Not FoundðŸ¥²</div> },
 ];

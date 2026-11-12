@@ -1,6 +1,5 @@
-import RecipeCard from './RecipeCard';
+import RecipeCard from '../RecipeCard/RecipeCard';
 
-// Display multiple recipes
 function RecipeList({ recipes, onDeleteRecipe, onEditRecipe }) {
   return (
     <div className="recipe-list">
