@@ -15,7 +15,7 @@ const FrontCover = React.forwardRef((props, ref) => {
     >
       <video
         className="Cover"
-        src="/Cover.mp4"
+        src={`${import.meta.env.BASE_URL}Cover.mp4`}
         autoPlay
         loop
         muted
