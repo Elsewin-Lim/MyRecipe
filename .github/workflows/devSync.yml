@@ -9,20 +9,16 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     permissions:
-        contents: write
-        pull-requests: write
+      contents: read
+      pull-requests: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Create Pull Request to Sync with main
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: auto-sync-main-to-dev
-          base: dev
-          branch-suffix: timestamp
-          title: "🔄 Automated Sync: Main -> Dev"
-          body: "This is an automatic Pull Request to keep the `dev` branch synchronized with the latest changes from `main`."
+      - name: Create Pull Request from main to dev
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh pr create \
+            --base dev \
+            --head main \
+            --title "🔄 Automated Sync: Main -> Dev" \
+            --body "This is an automatic Pull Request to keep the \`dev\` branch synchronized with the latest changes from \`main\`." || echo "PR already exists or branches are already in sync."
