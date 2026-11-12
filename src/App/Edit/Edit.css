@@ -1,17 +1,15 @@
-/* Main page */
-#root {
+.editPage {
+  width: 100%;
   max-width: 1100px;
   margin: 0 auto;
   padding: 24px;
 }
 
-h1 {
+.editPage h1 {
   text-align: center;
   margin-bottom: 30px;
 }
 
-/* Search and filter section */
-.search-bar,
 .category-filter,
 .ingredient-filter {
   width: 100%;
@@ -19,26 +17,6 @@ h1 {
   margin: 15px auto;
 }
 
-/* Search input */
-.search-bar input {
-  width: 100%;
-  padding: 13px 16px;
-  font-size: 16px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  box-sizing: border-box;
-  outline: none;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
-}
-
-.search-bar input:focus {
-  border-color: #16a34a;
-  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
-}
-
-/* Category and ingredient filters */
 .category-filter label,
 .ingredient-filter label {
   display: block;
@@ -57,7 +35,6 @@ h1 {
   cursor: pointer;
 }
 
-/* Add recipe form */
 .add-recipe-form {
   max-width: 600px;
   margin: 30px auto;
@@ -94,7 +71,15 @@ h1 {
   background-color: #15803d;
 }
 
-/* Recipe list */
+.add-recipe-form .cancel-button {
+  background-color: transparent;
+  color: #6b6375;
+}
+
+.add-recipe-form .cancel-button:hover {
+  background-color: #f3f4f6;
+}
+
 .recipe-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -113,9 +98,8 @@ h1 {
   margin-top: 0;
 }
 
-/* Responsive layout */
 @media (max-width: 600px) {
-  #root {
+  .editPage {
     padding: 16px;
   }
 
@@ -126,10 +110,4 @@ h1 {
   .recipe-list {
     grid-template-columns: 1fr;
   }
-.HomeNav {
-  padding: 1rem;
-  background: #222;
-  color: #fff;
-  display: flex;
-  gap: 1rem;
 }

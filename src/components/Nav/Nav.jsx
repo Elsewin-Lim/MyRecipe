@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { routeList } from '../../router/routes.config';
 import './Nav.css';
 
