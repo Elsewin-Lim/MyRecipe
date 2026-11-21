@@ -56,3 +56,18 @@
 .book-page-content > :last-child {
   margin-bottom: 0;
 }
+
+.book-page-content [data-split-from] {
+  margin-top: 0;
+  padding-top: 0;
+  text-indent: 0;
+}
+
+.book-page-content [data-split-to] {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.book-page-content li[data-split-from]:first-of-type {
+  list-style: none;
+}
