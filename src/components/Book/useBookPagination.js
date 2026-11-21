@@ -53,6 +53,7 @@ export function useBookPagination({
 }) {
   const requestIdRef = useRef(0);
   const [pages, setPages] = useState(null);
+  const [pagesContentKey, setPagesContentKey] = useState(null);
   const [mountKey, setMountKey] = useState(0);
 
   const paginate = useCallback(async () => {
@@ -85,6 +86,7 @@ export function useBookPagination({
       if (requestId !== requestIdRef.current) return;
 
       setPages(pageHtml);
+      setPagesContentKey(contentKey);
       setMountKey((value) => value + 1);
     } catch (error) {
       console.error('[Book] pagination failed', error);
@@ -100,5 +102,5 @@ export function useBookPagination({
     return () => window.clearTimeout(timer);
   }, [paginate]);
 
-  return { pages, mountKey };
+  return { pages, mountKey, pagesContentKey };
 }

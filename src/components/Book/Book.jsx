@@ -65,7 +65,7 @@ function Book({
     stage.style.setProperty('--book-page-scale', String(scale));
   }, [getBoundsRect, width, height]);
 
-  const { pages, mountKey } = useBookPagination({
+  const { pages, mountKey, pagesContentKey } = useBookPagination({
     sourceRef,
     contentKey: resolvedContentKey,
     pageWidth: width,
@@ -74,16 +74,16 @@ function Book({
   });
 
   const startPage = useMemo(() => {
-    if (pages === null) return 0;
+    if (pages === null || pagesContentKey !== resolvedContentKey) return 0;
 
     return resolveStartPage(readBookPage(storageKey), pages.length);
-  }, [pages, storageKey]);
+  }, [pages, pagesContentKey, resolvedContentKey, storageKey]);
 
   const handleFlip = useCallback(
     (event) => {
       onFlip?.(event);
 
-      if (pages === null) return;
+      if (pages === null || pagesContentKey !== resolvedContentKey) return;
 
       const flip = book.current?.pageFlip?.();
       const page =
@@ -100,7 +100,7 @@ function Book({
 
       writeBookPage(storageKey, page, total);
     },
-    [onFlip, pages, storageKey]
+    [onFlip, pages, pagesContentKey, resolvedContentKey, storageKey]
   );
 
   const handleInit = useCallback(
