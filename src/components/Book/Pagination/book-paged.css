@@ -1,0 +1,73 @@
+.recipe-entry {
+  margin: 0 0 16px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #2a2119;
+  /* A new recipe always starts a fresh page. Only an overflowing recipe
+     continues onto the following page. */
+  break-before: page;
+}
+
+.recipe-entry--first {
+  break-before: auto;
+}
+
+.recipe-entry h1 {
+  margin: 0 0 2px;
+  font-size: 22px;
+  line-height: 1.15;
+  color: #4a2f1b;
+  break-after: avoid;
+}
+
+.recipe-meta {
+  margin: 0 0 8px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #8a6d52;
+}
+
+.recipe-entry h2 {
+  margin: 8px 0 4px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b4f36;
+  break-after: avoid;
+}
+
+.recipe-ingredients {
+  margin: 0;
+  padding-left: 17px;
+}
+
+.recipe-ingredients li {
+  margin: 1px 0;
+}
+
+.book-page-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* The trailing margin of the last block on a page is empty space past the
+   page edge; drop it so it cannot count as overflow on an otherwise full page. */
+.book-page-content > :last-child {
+  margin-bottom: 0;
+}
+
+.book-page-content [data-split-from] {
+  margin-top: 0;
+  padding-top: 0;
+  text-indent: 0;
+}
+
+.book-page-content [data-split-to] {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.book-page-content li[data-split-from]:first-of-type {
+  list-style: none;
+}

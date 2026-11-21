@@ -1,0 +1,145 @@
+.book-test__entry {
+  margin: 0 0 24px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.book-test__entry--first {
+  margin-top: 0;
+}
+
+.book-test__entry--forced {
+  break-before: page;
+}
+
+.book-test__meta {
+  margin: 0 0 16px;
+  color: #7a5b43;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.book-test__entry h1 {
+  margin: 0 0 6px;
+  color: #4a2f1b;
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.book-test__entry h2 {
+  margin: 0 0 8px;
+  color: #6b4f36;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.book-test__figure {
+  margin: 0 0 16px;
+  padding: 8px;
+  border: 2px solid #c8a27c;
+  background: #fff8f0;
+  break-inside: avoid;
+}
+
+.book-test__figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.book-test__figure--tall img {
+  height: 220px;
+  object-fit: cover;
+}
+
+.book-test__figure figcaption {
+  margin-top: 6px;
+  color: #6b4f36;
+  font-size: 11px;
+}
+
+.book-test__image-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin-bottom: 16px;
+  break-inside: avoid;
+}
+
+.book-test__image-row img {
+  display: block;
+  max-width: 100%;
+  border: 2px solid #4b6f8a;
+}
+
+.book-test__image-row img:first-child {
+  width: 96px;
+  height: 96px;
+}
+
+.book-test__image-row img:nth-child(2) {
+  width: 120px;
+  height: 160px;
+}
+
+.book-test__label {
+  display: block;
+  margin: 0 0 14px;
+  font-weight: bold;
+  break-inside: avoid;
+}
+
+.book-test__textarea,
+.book-test__input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 4px;
+  padding: 6px;
+  border: 2px solid #8a6d52;
+  background: #fffdf8;
+  color: #2a2119;
+  font: inherit;
+}
+
+.book-test__textarea {
+  height: 110px;
+  max-height: 110px;
+  resize: none;
+}
+
+.book-test__no-break {
+  padding: 10px;
+  border: 2px dashed #d27c2c;
+  background: #fff3e6;
+  break-inside: avoid;
+}
+
+.book-test__table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+}
+
+.book-test__table th,
+.book-test__table td {
+  padding: 3px 5px;
+  border: 1px solid #c8a27c;
+  text-align: left;
+  vertical-align: top;
+}
+
+.book-test__table th {
+  background: #f1e2d2;
+}
+
+.book-test__long-value {
+  margin: 0;
+  padding: 8px;
+  border: 2px solid #b04444;
+  background: #fff0f0;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
