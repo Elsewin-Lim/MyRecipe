@@ -3,7 +3,7 @@ import './Book.css';
 import './Pages/Page.css';
 import FrontCover from './Covers/FrontCover';
 import BackCover from './Covers/BackCover';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef } from 'react';
 import { useStore } from '../../context/useStore';
 import BookPage from './Pagination/BookPage';
 import { useBookPagination } from './useBookPagination';
@@ -21,7 +21,7 @@ const PLACEHOLDER_PAGE =
 
 function Book({
   children,
-  contentKey = 'default',
+  contentKey,
   storageKey = DEFAULT_BOOK_PAGE_KEY,
   width = BASE_WIDTH,
   height = BASE_HEIGHT,
@@ -31,6 +31,8 @@ function Book({
   onFlip,
   ...flipProps
 }) {
+  const instanceContentKey = useId();
+  const resolvedContentKey = contentKey ?? instanceContentKey;
   const book = useRef(null);
   const sourceRef = useRef(null);
   const stageRef = useRef(null);
@@ -65,7 +67,7 @@ function Book({
 
   const { pages, mountKey } = useBookPagination({
     sourceRef,
-    contentKey,
+    contentKey: resolvedContentKey,
     pageWidth: width,
     pageHeight: height,
     onError: handlePaginationError,
