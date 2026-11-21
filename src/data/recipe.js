@@ -1,269 +1,33 @@
+import { Bakery } from './Ingredient/bakery.js';
+import { Dairy } from './Ingredient/Dairy.js';
+import { Egg } from './Ingredient/Egg.js';
+import { Fruit } from './Ingredient/Fruits.js';
+import { Grain } from './Ingredient/Grain.js';
+import { Herbs } from './Ingredient/Herb.js';
+import { Legumes } from './Ingredient/Legumes.js';
+import { Meat } from './Ingredient/Meat.js';
+import { Nut } from './Ingredient/Nut.js';
+import { Pantry } from './Ingredient/Pantry.js';
+import { Sauce } from './Ingredient/Sauce.js';
+import { Seafood } from './Ingredient/Seafood.js';
+import { Spice } from './Ingredient/Spice.js';
+import { Vegetable } from './Ingredient/Vegetable.js';
+
 export const ingredientLibrary = [
-  // VEGETABLES
-  { id: 'garlic', name: 'Garlic', unit: 'cloves', category: 'Vegetables' },
-  { id: 'onion', name: 'Onion', unit: 'pcs', category: 'Vegetables' },
-  { id: 'red-onion', name: 'Red Onion', unit: 'pcs', category: 'Vegetables' },
-  { id: 'shallot', name: 'Shallot', unit: 'pcs', category: 'Vegetables' },
-  {
-    id: 'spring-onion',
-    name: 'Spring Onion',
-    unit: 'g',
-    category: 'Vegetables',
-  },
-  { id: 'tomato', name: 'Tomato', unit: 'pcs', category: 'Vegetables' },
-  { id: 'potato', name: 'Potato', unit: 'g', category: 'Vegetables' },
-  {
-    id: 'sweet-potato',
-    name: 'Sweet Potato',
-    unit: 'g',
-    category: 'Vegetables',
-  },
-  { id: 'carrot', name: 'Carrot', unit: 'g', category: 'Vegetables' },
-  { id: 'cabbage', name: 'Cabbage', unit: 'g', category: 'Vegetables' },
-  {
-    id: 'napa-cabbage',
-    name: 'Napa Cabbage',
-    unit: 'g',
-    category: 'Vegetables',
-  },
-  { id: 'lettuce', name: 'Lettuce', unit: 'g', category: 'Vegetables' },
-  { id: 'spinach', name: 'Spinach', unit: 'g', category: 'Vegetables' },
-  {
-    id: 'water-spinach',
-    name: 'Water Spinach',
-    unit: 'g',
-    category: 'Vegetables',
-  },
-  { id: 'bok-choy', name: 'Bok Choy', unit: 'g', category: 'Vegetables' },
-  { id: 'broccoli', name: 'Broccoli', unit: 'g', category: 'Vegetables' },
-  { id: 'cauliflower', name: 'Cauliflower', unit: 'g', category: 'Vegetables' },
-  { id: 'cucumber', name: 'Cucumber', unit: 'pcs', category: 'Vegetables' },
-  { id: 'eggplant', name: 'Eggplant', unit: 'pcs', category: 'Vegetables' },
-  { id: 'pumpkin', name: 'Pumpkin', unit: 'g', category: 'Vegetables' },
-  { id: 'zucchini', name: 'Zucchini', unit: 'g', category: 'Vegetables' },
-  {
-    id: 'bell-pepper',
-    name: 'Bell Pepper',
-    unit: 'pcs',
-    category: 'Vegetables',
-  },
-  { id: 'chili', name: 'Fresh Chili', unit: 'pcs', category: 'Vegetables' },
-  { id: 'mushroom', name: 'Mushroom', unit: 'g', category: 'Vegetables' },
-  { id: 'green-beans', name: 'Green Beans', unit: 'g', category: 'Vegetables' },
-  { id: 'peas', name: 'Green Peas', unit: 'g', category: 'Vegetables' },
-  { id: 'corn', name: 'Corn', unit: 'g', category: 'Vegetables' },
-  { id: 'ginger', name: 'Ginger', unit: 'g', category: 'Vegetables' },
-  { id: 'celery', name: 'Celery', unit: 'g', category: 'Vegetables' },
-  { id: 'radish', name: 'Radish', unit: 'g', category: 'Vegetables' },
-  { id: 'okra', name: 'Okra', unit: 'g', category: 'Vegetables' },
-  {
-    id: 'bitter-melon',
-    name: 'Bitter Melon',
-    unit: 'g',
-    category: 'Vegetables',
-  },
-
-  // FRUITS
-  { id: 'apple', name: 'Apple', unit: 'pcs', category: 'Fruits' },
-  { id: 'banana', name: 'Banana', unit: 'pcs', category: 'Fruits' },
-  { id: 'orange', name: 'Orange', unit: 'pcs', category: 'Fruits' },
-  { id: 'lemon', name: 'Lemon', unit: 'pcs', category: 'Fruits' },
-  { id: 'lime', name: 'Lime', unit: 'pcs', category: 'Fruits' },
-  { id: 'mango', name: 'Mango', unit: 'pcs', category: 'Fruits' },
-  { id: 'papaya', name: 'Papaya', unit: 'g', category: 'Fruits' },
-  { id: 'pineapple', name: 'Pineapple', unit: 'g', category: 'Fruits' },
-  { id: 'watermelon', name: 'Watermelon', unit: 'g', category: 'Fruits' },
-  { id: 'strawberry', name: 'Strawberry', unit: 'g', category: 'Fruits' },
-  { id: 'blueberry', name: 'Blueberry', unit: 'g', category: 'Fruits' },
-  { id: 'grape', name: 'Grape', unit: 'g', category: 'Fruits' },
-  { id: 'avocado', name: 'Avocado', unit: 'pcs', category: 'Fruits' },
-  { id: 'coconut', name: 'Coconut', unit: 'pcs', category: 'Fruits' },
-
-  // MEAT
-  { id: 'chicken', name: 'Chicken', unit: 'g', category: 'Meat' },
-  { id: 'chicken-breast', name: 'Chicken Breast', unit: 'g', category: 'Meat' },
-  { id: 'chicken-thigh', name: 'Chicken Thigh', unit: 'g', category: 'Meat' },
-  { id: 'beef', name: 'Beef', unit: 'g', category: 'Meat' },
-  { id: 'ground-beef', name: 'Ground Beef', unit: 'g', category: 'Meat' },
-  { id: 'pork', name: 'Pork', unit: 'g', category: 'Meat' },
-  { id: 'pork-belly', name: 'Pork Belly', unit: 'g', category: 'Meat' },
-  { id: 'ground-pork', name: 'Ground Pork', unit: 'g', category: 'Meat' },
-  { id: 'duck', name: 'Duck', unit: 'g', category: 'Meat' },
-  { id: 'bacon', name: 'Bacon', unit: 'g', category: 'Meat' },
-  { id: 'sausage', name: 'Sausage', unit: 'g', category: 'Meat' },
-  { id: 'pepperoni', name: 'Pepperoni', unit: 'g', category: 'Meat' },
-  { id: 'ham', name: 'Ham', unit: 'g', category: 'Meat' },
-
-  // SEAFOOD
-  { id: 'fish', name: 'Fish', unit: 'g', category: 'Seafood' },
-  { id: 'salmon', name: 'Salmon', unit: 'g', category: 'Seafood' },
-  { id: 'tuna', name: 'Tuna', unit: 'g', category: 'Seafood' },
-  { id: 'shrimp', name: 'Shrimp', unit: 'g', category: 'Seafood' },
-  { id: 'squid', name: 'Squid', unit: 'g', category: 'Seafood' },
-  { id: 'crab', name: 'Crab', unit: 'g', category: 'Seafood' },
-  { id: 'mussels', name: 'Mussels', unit: 'g', category: 'Seafood' },
-  { id: 'clams', name: 'Clams', unit: 'g', category: 'Seafood' },
-  { id: 'dried-shrimp', name: 'Dried Shrimp', unit: 'g', category: 'Seafood' },
-
-  // EGGS
-  { id: 'egg', name: 'Chicken Egg', unit: 'pcs', category: 'Eggs' },
-  { id: 'duck-egg', name: 'Duck Egg', unit: 'pcs', category: 'Eggs' },
-  { id: 'quail-egg', name: 'Quail Egg', unit: 'pcs', category: 'Eggs' },
-
-  // DAIRY
-  { id: 'milk', name: 'Milk', unit: 'ml', category: 'Dairy' },
-  { id: 'butter', name: 'Butter', unit: 'g', category: 'Dairy' },
-  { id: 'cheese', name: 'Cheese', unit: 'g', category: 'Dairy' },
-  { id: 'cheddar', name: 'Cheddar Cheese', unit: 'g', category: 'Dairy' },
-  { id: 'mozzarella', name: 'Mozzarella', unit: 'g', category: 'Dairy' },
-  { id: 'parmesan', name: 'Parmesan Cheese', unit: 'g', category: 'Dairy' },
-  { id: 'yogurt', name: 'Yogurt', unit: 'g', category: 'Dairy' },
-  { id: 'greek-yogurt', name: 'Greek Yogurt', unit: 'g', category: 'Dairy' },
-  { id: 'cream', name: 'Cream', unit: 'ml', category: 'Dairy' },
-  {
-    id: 'condensed-milk',
-    name: 'Condensed Milk',
-    unit: 'ml',
-    category: 'Dairy',
-  },
-  {
-    id: 'evaporated-milk',
-    name: 'Evaporated Milk',
-    unit: 'ml',
-    category: 'Dairy',
-  },
-
-  // GRAINS
-  { id: 'rice', name: 'Rice', unit: 'g', category: 'Grains' },
-  { id: 'jasmine-rice', name: 'Jasmine Rice', unit: 'g', category: 'Grains' },
-  { id: 'brown-rice', name: 'Brown Rice', unit: 'g', category: 'Grains' },
-  { id: 'sticky-rice', name: 'Sticky Rice', unit: 'g', category: 'Grains' },
-  { id: 'rice-noodles', name: 'Rice Noodles', unit: 'g', category: 'Grains' },
-  { id: 'egg-noodles', name: 'Egg Noodles', unit: 'g', category: 'Grains' },
-  { id: 'noodles', name: 'Noodles', unit: 'g', category: 'Grains' },
-  { id: 'spaghetti', name: 'Spaghetti', unit: 'g', category: 'Grains' },
-  { id: 'pasta', name: 'Pasta', unit: 'g', category: 'Grains' },
-  { id: 'oats', name: 'Oats', unit: 'g', category: 'Grains' },
-  { id: 'flour', name: 'Wheat Flour', unit: 'g', category: 'Grains' },
-  { id: 'pizza-dough', name: 'Pizza Dough', unit: 'g', category: 'Grains' },
-
-  // BAKERY
-  { id: 'bread', name: 'Bread', unit: 'slices', category: 'Bakery' },
-  { id: 'baguette', name: 'Baguette', unit: 'pcs', category: 'Bakery' },
-  { id: 'tortilla', name: 'Tortilla', unit: 'pcs', category: 'Bakery' },
-  { id: 'breadcrumbs', name: 'Breadcrumbs', unit: 'g', category: 'Bakery' },
-
-  // BEANS & LEGUMES
-  { id: 'tofu', name: 'Tofu', unit: 'g', category: 'Legumes' },
-  { id: 'chickpeas', name: 'Chickpeas', unit: 'g', category: 'Legumes' },
-  { id: 'lentils', name: 'Lentils', unit: 'g', category: 'Legumes' },
-  { id: 'red-beans', name: 'Red Beans', unit: 'g', category: 'Legumes' },
-  { id: 'black-beans', name: 'Black Beans', unit: 'g', category: 'Legumes' },
-  { id: 'soybeans', name: 'Soybeans', unit: 'g', category: 'Legumes' },
-
-  // HERBS
-  { id: 'coriander', name: 'Coriander', unit: 'g', category: 'Herbs' },
-  { id: 'basil', name: 'Basil', unit: 'g', category: 'Herbs' },
-  { id: 'thai-basil', name: 'Thai Basil', unit: 'g', category: 'Herbs' },
-  { id: 'mint', name: 'Mint', unit: 'g', category: 'Herbs' },
-  { id: 'parsley', name: 'Parsley', unit: 'g', category: 'Herbs' },
-  { id: 'rosemary', name: 'Rosemary', unit: 'g', category: 'Herbs' },
-  { id: 'thyme', name: 'Thyme', unit: 'g', category: 'Herbs' },
-  { id: 'lemongrass', name: 'Lemongrass', unit: 'stalks', category: 'Herbs' },
-  {
-    id: 'kaffir-lime-leaves',
-    name: 'Makrut Lime Leaves',
-    unit: 'pcs',
-    category: 'Herbs',
-  },
-
-  // SPICES
-  { id: 'black-pepper', name: 'Black Pepper', unit: 'g', category: 'Spices' },
-  { id: 'white-pepper', name: 'White Pepper', unit: 'g', category: 'Spices' },
-  { id: 'turmeric', name: 'Turmeric', unit: 'g', category: 'Spices' },
-  { id: 'cumin', name: 'Cumin', unit: 'g', category: 'Spices' },
-  { id: 'paprika', name: 'Paprika', unit: 'g', category: 'Spices' },
-  { id: 'chili-powder', name: 'Chili Powder', unit: 'g', category: 'Spices' },
-  { id: 'curry-powder', name: 'Curry Powder', unit: 'g', category: 'Spices' },
-  { id: 'cinnamon', name: 'Cinnamon', unit: 'g', category: 'Spices' },
-  { id: 'star-anise', name: 'Star Anise', unit: 'pcs', category: 'Spices' },
-  {
-    id: 'five-spice',
-    name: 'Five-Spice Powder',
-    unit: 'g',
-    category: 'Spices',
-  },
-
-  // SAUCES & CONDIMENTS
-  { id: 'soy-sauce', name: 'Soy Sauce', unit: 'ml', category: 'Sauces' },
-  {
-    id: 'dark-soy-sauce',
-    name: 'Dark Soy Sauce',
-    unit: 'ml',
-    category: 'Sauces',
-  },
-  { id: 'fish-sauce', name: 'Fish Sauce', unit: 'ml', category: 'Sauces' },
-  { id: 'oyster-sauce', name: 'Oyster Sauce', unit: 'ml', category: 'Sauces' },
-  { id: 'chili-sauce', name: 'Chili Sauce', unit: 'ml', category: 'Sauces' },
-  {
-    id: 'sweet-chili-sauce',
-    name: 'Sweet Chili Sauce',
-    unit: 'ml',
-    category: 'Sauces',
-  },
-  { id: 'hoisin-sauce', name: 'Hoisin Sauce', unit: 'ml', category: 'Sauces' },
-  { id: 'ketchup', name: 'Ketchup', unit: 'ml', category: 'Sauces' },
-  { id: 'mayonnaise', name: 'Mayonnaise', unit: 'g', category: 'Sauces' },
-  { id: 'mustard', name: 'Mustard', unit: 'g', category: 'Sauces' },
-  { id: 'vinegar', name: 'Vinegar', unit: 'ml', category: 'Sauces' },
-  { id: 'rice-vinegar', name: 'Rice Vinegar', unit: 'ml', category: 'Sauces' },
-  { id: 'tomato-paste', name: 'Tomato Paste', unit: 'g', category: 'Sauces' },
-
-  // PANTRY & COOKING ESSENTIALS
-  { id: 'oil', name: 'Cooking Oil', unit: 'ml', category: 'Pantry' },
-  { id: 'olive-oil', name: 'Olive Oil', unit: 'ml', category: 'Pantry' },
-  { id: 'coconut-oil', name: 'Coconut Oil', unit: 'ml', category: 'Pantry' },
-  { id: 'sesame-oil', name: 'Sesame Oil', unit: 'ml', category: 'Pantry' },
-  { id: 'salt', name: 'Salt', unit: 'g', category: 'Pantry' },
-  { id: 'sugar', name: 'Sugar', unit: 'g', category: 'Pantry' },
-  { id: 'brown-sugar', name: 'Brown Sugar', unit: 'g', category: 'Pantry' },
-  { id: 'honey', name: 'Honey', unit: 'g', category: 'Pantry' },
-  { id: 'coconut-milk', name: 'Coconut Milk', unit: 'ml', category: 'Pantry' },
-  {
-    id: 'chicken-stock',
-    name: 'Chicken Stock',
-    unit: 'ml',
-    category: 'Pantry',
-  },
-  {
-    id: 'vegetable-stock',
-    name: 'Vegetable Stock',
-    unit: 'ml',
-    category: 'Pantry',
-  },
-  { id: 'cornstarch', name: 'Cornstarch', unit: 'g', category: 'Pantry' },
-  { id: 'baking-powder', name: 'Baking Powder', unit: 'g', category: 'Pantry' },
-  { id: 'baking-soda', name: 'Baking Soda', unit: 'g', category: 'Pantry' },
-  { id: 'peanut-butter', name: 'Peanut Butter', unit: 'g', category: 'Pantry' },
-  { id: 'water', name: 'Water', unit: 'ml', category: 'Pantry' },
-
-  // NUTS & SEEDS
-  { id: 'peanut', name: 'Peanut', unit: 'g', category: 'Nuts & Seeds' },
-  { id: 'almond', name: 'Almond', unit: 'g', category: 'Nuts & Seeds' },
-  { id: 'cashew', name: 'Cashew', unit: 'g', category: 'Nuts & Seeds' },
-  { id: 'walnut', name: 'Walnut', unit: 'g', category: 'Nuts & Seeds' },
-  {
-    id: 'sesame-seeds',
-    name: 'Sesame Seeds',
-    unit: 'g',
-    category: 'Nuts & Seeds',
-  },
-  {
-    id: 'sunflower-seeds',
-    name: 'Sunflower Seeds',
-    unit: 'g',
-    category: 'Nuts & Seeds',
-  },
+  ...Bakery,
+  ...Dairy,
+  ...Egg,
+  ...Fruit,
+  ...Grain,
+  ...Herbs,
+  ...Legumes,
+  ...Meat,
+  ...Nut,
+  ...Pantry,
+  ...Sauce,
+  ...Seafood,
+  ...Spice,
+  ...Vegetable,
 ];
 
 export const recipes = [
@@ -276,6 +40,13 @@ export const recipes = [
       { id: 'garlic', quantity: 3 },
       { id: 'oil', quantity: 20 },
     ],
+    instructions: [
+      'Cook the rice if needed, then let it cool slightly and break up any clumps.',
+      'Mince the garlic and beat the eggs in a bowl.',
+      'Heat half the oil in a skillet. Scramble the eggs until set, then transfer them to a plate.',
+      'Heat the remaining oil in the same skillet. Stir in the garlic for about 30 seconds, then add the cooked rice and stir-fry until hot.',
+      'Return the eggs to the skillet, toss everything together, and serve.',
+    ],
   },
   {
     id: 'omelette',
@@ -284,6 +55,11 @@ export const recipes = [
       { id: 'egg', quantity: 3 },
       { id: 'onion', quantity: 1 },
       { id: 'tomato', quantity: 1 },
+    ],
+    instructions: [
+      'Finely dice the onion and tomato. Crack the eggs into a bowl and whisk until combined.',
+      'Heat a nonstick pan over medium heat. Cook the onion and tomato until softened and most of the tomato liquid has evaporated.',
+      'Pour in the eggs and reduce the heat. Cook until the eggs are fully set, then fold the omelette and serve.',
     ],
   },
   {
@@ -300,6 +76,12 @@ export const recipes = [
       { id: 'olive-oil', quantity: 15 },
       { id: 'salt', quantity: 3 },
     ],
+    instructions: [
+      'Preheat the oven to 230°C (450°F). Stretch the dough into a round and place it on a baking tray.',
+      'Spread a thin layer of tomato paste over the dough, leaving a border. Sprinkle with salt and add the mozzarella.',
+      'Drizzle with olive oil and bake for 10–15 minutes, until the crust is golden and the cheese is bubbling.',
+      'Top with fresh basil, slice, and serve.',
+    ],
   },
   {
     id: 'pepperoni-pizza',
@@ -314,6 +96,12 @@ export const recipes = [
       { id: 'pepperoni', quantity: 100 },
       { id: 'olive-oil', quantity: 15 },
     ],
+    instructions: [
+      'Preheat the oven to 230°C (450°F). Stretch the dough and place it on a baking tray.',
+      'Spread the tomato paste over the dough, leaving a border. Add the mozzarella and arrange the pepperoni slices on top.',
+      'Drizzle with olive oil and bake for 10–15 minutes, until the crust is golden and the cheese is bubbling.',
+      'Let the pizza rest for 2 minutes before slicing.',
+    ],
   },
   {
     id: 'hawaiian-pizza',
@@ -327,6 +115,85 @@ export const recipes = [
       { id: 'mozzarella', quantity: 150 },
       { id: 'ham', quantity: 100 },
       { id: 'pineapple', quantity: 100 },
+    ],
+    instructions: [
+      'Preheat the oven to 230°C (450°F). Stretch the dough and place it on a baking tray.',
+      'Cut the ham and pineapple into bite-sized pieces. Drain and pat the pineapple dry.',
+      'Spread the tomato paste over the dough, leaving a border. Add the mozzarella, ham, and pineapple.',
+      'Bake for 10–15 minutes, until the crust is golden and the cheese is bubbling. Let it rest for 2 minutes before slicing.',
+    ],
+  },
+  {
+    id: 'garlic-omelette',
+    name: 'Garlic Omelette',
+    cookingTime: 10,
+    servings: 1,
+    ingredients: [
+      { id: 'egg', quantity: 3 },
+      { id: 'garlic', quantity: 2 },
+      { id: 'oil', quantity: 10 },
+    ],
+    instructions: [
+      'Crack the eggs into a bowl and whisk until combined.',
+      'Finely chop the garlic. Heat the oil over medium heat and stir in the garlic for about 30 seconds.',
+      'Pour in the eggs and cook until fully set. Fold the omelette and serve.',
+    ],
+  },
+  {
+    id: 'tomato-egg-rice',
+    name: 'Tomato and Egg Rice',
+    cookingTime: 20,
+    servings: 2,
+    ingredients: [
+      { id: 'rice', quantity: 150 },
+      { id: 'egg', quantity: 3 },
+      { id: 'tomato', quantity: 2 },
+      { id: 'garlic', quantity: 2 },
+      { id: 'oil', quantity: 15 },
+      { id: 'salt', quantity: 2 },
+    ],
+    instructions: [
+      'Cook the rice according to the package directions.',
+      'Chop the tomatoes, mince the garlic, and beat the eggs.',
+      'Heat half the oil in a skillet. Scramble the eggs until set, then transfer them to a plate.',
+      'Add the remaining oil and garlic to the skillet. Stir for 30 seconds, then add the tomatoes and salt. Cook until the tomatoes soften.',
+      'Return the eggs to the skillet, stir gently, and serve over the rice.',
+    ],
+  },
+  {
+    id: 'garlic-mozzarella-flatbread',
+    name: 'Garlic Mozzarella Flatbread',
+    cookingTime: 20,
+    servings: 2,
+    ingredients: [
+      { id: 'pizza-dough', quantity: 250 },
+      { id: 'garlic', quantity: 3 },
+      { id: 'olive-oil', quantity: 15 },
+      { id: 'mozzarella', quantity: 120 },
+      { id: 'basil', quantity: 5 },
+      { id: 'salt', quantity: 2 },
+    ],
+    instructions: [
+      'Preheat the oven to 230°C (450°F). Stretch the dough into a thin oval on a baking tray.',
+      'Mince the garlic and mix it with the olive oil and salt. Brush the mixture over the dough.',
+      'Scatter the mozzarella over the dough. Bake for 10–15 minutes, until the edges are golden and the cheese is bubbling.',
+      'Top with torn basil leaves, slice, and serve.',
+    ],
+  },
+  {
+    id: 'grape-pineapple-salad',
+    name: 'Grape and Pineapple Salad',
+    cookingTime: 10,
+    servings: 2,
+    ingredients: [
+      { id: 'grape', quantity: 150 },
+      { id: 'pineapple', quantity: 200 },
+      { id: 'yogurt', quantity: 100 },
+    ],
+    instructions: [
+      'Wash the grapes and cut them in half.',
+      'Cut the pineapple into bite-sized pieces and drain any excess juice.',
+      'Fold the grapes and pineapple into the yogurt. Divide into two bowls and serve chilled.',
     ],
   },
 ];

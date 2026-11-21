@@ -22,7 +22,9 @@
 .recipeIngredients {
   padding-left: 20px;
   margin-bottom: 20px;
-  flex-grow: 1;
+  line-height: 1.5;
+  max-height: calc(6em + 32px);
+  overflow-y: auto;
 }
 
 .recipeIngredients li {
@@ -30,7 +32,8 @@
   color: #ccc;
 }
 
-.recipeLibraryCard button {
+.recipeLibraryCard button,
+.recipeLibraryCard .recipeInstructionButton {
   background-color: #646cff;
   color: white;
   padding: 12px;
@@ -38,8 +41,15 @@
   border-radius: 8px;
   cursor: pointer;
   width: 100%;
+  margin-top: auto;
+  box-sizing: border-box;
+  font: inherit;
+  text-align: center;
+  text-decoration: none;
 }
 
-.recipeLibraryCard button:hover {
+.recipeLibraryCard button:hover,
+.recipeLibraryCard .recipeInstructionButton:hover {
   background-color: #535bf2;
+  margin-bottom: 8px;
 }
