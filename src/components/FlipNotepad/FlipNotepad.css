@@ -1,0 +1,218 @@
+.FlipNotepad {
+  --fn-desk: #dde4ea;
+  --fn-back: #2a3646;
+  --fn-paper: #fcfcf9;
+  --fn-ink: #1c2a52;
+  --fn-rule: #c8d5e6;
+  --fn-red: #d64545;
+  --fn-mute: #5d6b82;
+  --fn-ring: #aab4c2;
+  --fn-sans: 'DotGothic16', system-ui, sans-serif;
+  --fn-hand: 'DotGothic16', 'Segoe Script', 'Bradley Hand', cursive;
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  width: 100%;
+  min-height: 100svh;
+  margin: 0;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  color: var(--fn-ink);
+  background: var(--fn-desk);
+  font-family: var(--fn-sans);
+  font-synthesis: weight;
+  text-align: start;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  .FlipNotepad:not([data-theme='light']) {
+    --fn-desk: #14181d;
+    --fn-back: #0b0e12;
+    --fn-paper: #1f252c;
+    --fn-ink: #e6ecf7;
+    --fn-rule: #34404e;
+    --fn-red: #ff7f78;
+    --fn-mute: #9aa8bd;
+    --fn-ring: #6f7b8b;
+
+    color-scheme: dark;
+  }
+}
+
+.FlipNotepad[data-theme='dark'] {
+  --fn-desk: #14181d;
+  --fn-back: #0b0e12;
+  --fn-paper: #1f252c;
+  --fn-ink: #e6ecf7;
+  --fn-rule: #34404e;
+  --fn-red: #ff7f78;
+  --fn-mute: #9aa8bd;
+  --fn-ring: #6f7b8b;
+
+  color-scheme: dark;
+}
+
+.FlipNotepad__stage {
+  position: relative;
+  width: min(92vw, 460px);
+  height: min(72vh, 580px);
+  perspective: 2400px;
+  background: var(--fn-back);
+  padding-top: 26px;
+  border-radius: 10px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+  box-sizing: content-box;
+}
+
+.FlipNotepad__rings {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 0 10px;
+}
+
+.FlipNotepad__rings i {
+  width: 9px;
+  height: 30px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, var(--fn-ring), #fff 45%, var(--fn-ring));
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
+}
+
+.FlipNotepad__sheet {
+  position: absolute;
+  inset: 26px 0 0 0;
+  background: var(--fn-paper);
+  display: flex;
+  flex-direction: column;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 2px 0 -1px var(--fn-rule);
+}
+
+.FlipNotepad__flip {
+  position: absolute;
+  inset: 26px 0 0 0;
+  transform-origin: top center;
+  transform-style: preserve-3d;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.FlipNotepad__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--fn-paper);
+  border-radius: 0 0 8px 8px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+}
+
+.FlipNotepad__face--back {
+  transform: rotateX(180deg);
+  background: linear-gradient(var(--fn-rule), var(--fn-paper) 45%);
+}
+
+.FlipNotepad__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 26px 14px;
+  border-bottom: 2px solid var(--fn-red);
+}
+
+.FlipNotepad__num {
+  font-size: 84px;
+  line-height: 0.9;
+  font-weight: 800;
+  letter-spacing: -2px;
+}
+
+.FlipNotepad__mon {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.FlipNotepad__wd {
+  font-size: 16px;
+  color: var(--fn-mute);
+  margin-top: 2px;
+}
+
+.FlipNotepad__text {
+  flex: 1;
+  margin: 0;
+  border: 0;
+  outline: 0;
+  resize: none;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 22px 0 64px;
+  font: 500 26px/36px var(--fn-hand);
+  color: var(--fn-ink);
+  white-space: pre-wrap;
+  overflow: auto;
+  border-radius: 0 0 8px 8px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 50px,
+      var(--fn-red) 50px 51px,
+      transparent 51px
+    ),
+    repeating-linear-gradient(transparent 0 35px, var(--fn-rule) 35px 36px);
+  background-attachment: local, local;
+  background-color: var(--fn-paper);
+}
+
+.FlipNotepad textarea.FlipNotepad__text::placeholder {
+  color: var(--fn-mute);
+  opacity: 0.7;
+}
+
+.FlipNotepad__nav {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.FlipNotepad button,
+.FlipNotepad input[type='date'] {
+  font: 700 15px var(--fn-sans);
+  color: var(--fn-ink);
+  background: var(--fn-paper);
+  border: 1.5px solid var(--fn-rule);
+  border-radius: 8px;
+  padding: 9px 14px;
+  cursor: pointer;
+  box-sizing: content-box;
+}
+
+.FlipNotepad button:hover {
+  border-color: var(--fn-ink);
+}
+
+.FlipNotepad button:focus-visible,
+.FlipNotepad input:focus-visible,
+.FlipNotepad textarea:focus-visible {
+  outline: 3px solid var(--fn-red);
+  outline-offset: 2px;
+}
+
+.FlipNotepad__hint {
+  font-size: 13px;
+  color: var(--fn-mute);
+}
