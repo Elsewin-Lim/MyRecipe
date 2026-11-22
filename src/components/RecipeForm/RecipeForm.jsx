@@ -19,7 +19,7 @@ function RecipeForm({
     editingRecipe ? editingRecipe.ingredients.join(', ') : ''
   );
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!title.trim() || !cookingTime || !ingredients.trim()) {
@@ -38,17 +38,26 @@ function RecipeForm({
       ingredients: ingredientList,
     };
 
-    if (isEditing) {
-      onUpdateRecipe({ ...editingRecipe, ...recipe });
-      return;
+    try {
+      if (isEditing) {
+        await onUpdateRecipe({
+          ...editingRecipe,
+          ...recipe,
+        });
+      } else {
+        await onAddRecipe({
+          id: crypto.randomUUID(),
+          ...recipe,
+        });
+      }
+
+      setTitle('');
+      setCategory('Breakfast');
+      setCookingTime('');
+      setIngredients('');
+    } catch (error) {
+      console.error('Error saving recipe:', error);
     }
-
-    onAddRecipe({ id: Date.now(), ...recipe });
-
-    setTitle('');
-    setCategory('Breakfast');
-    setCookingTime('');
-    setIngredients('');
   };
 
   return (
