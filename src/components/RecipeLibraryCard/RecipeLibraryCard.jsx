@@ -1,5 +1,6 @@
 import { ingredientLibrary } from '../../data/recipe';
 import './RecipeLibraryCard.css';
+import { Link } from 'react-router';
 
 function RecipeLibraryCard({ recipe, onAddIngredients }) {
   return (
@@ -19,6 +20,13 @@ function RecipeLibraryCard({ recipe, onAddIngredients }) {
           );
         })}
       </ul>
+
+      <Link
+        className="recipeInstructionButton"
+        to={`/TODO?recipe=${encodeURIComponent(recipe.id)}`}
+      >
+        Instruction
+      </Link>
 
       <button
         type="button"
