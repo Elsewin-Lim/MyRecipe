@@ -38,3 +38,16 @@
 .shoppingListPage li input[type='number'] {
   width: 80px;
 }
+
+.shoppingListPage__notes {
+  margin-top: 32px;
+}
+
+.shoppingListPage .shoppingListPage__notepad {
+  width: 100%;
+  max-width: 560px;
+  min-height: 0;
+  margin: 12px auto 0;
+  padding: 18px 12px;
+  border-radius: 12px;
+}

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { ingredientLibrary } from '../../data/recipe';
 import { useRecipe } from '../../context/recipeContext';
+import { useStore } from '../../context/useStore';
+import FlipNotepad from '../../components/FlipNotepad/FlipNotepad';
 import './ShoppingList.css';
 
 function ShoppingList() {
@@ -13,6 +15,7 @@ function ShoppingList() {
     clearBought,
     clearAll,
   } = useRecipe();
+  const { showToast } = useStore();
 
   const [selectedIngredient, setSelectedIngredient] = useState('rice');
   const [quantity, setQuantity] = useState(1);
@@ -43,8 +46,17 @@ function ShoppingList() {
     const amount = Number(quantity);
 
     if (!Number.isFinite(amount) || amount <= 0) {
+      showToast('Enter a quantity greater than 0.', { type: 'error' });
       return;
     }
+
+    const ingredient = ingredientLibrary.find(
+      (item) => item.id === selectedIngredient
+    );
+    const amountLabel = ingredient?.unit
+      ? `${amount} ${ingredient.unit}`
+      : String(amount);
+    const ingredientName = ingredient?.name ?? 'Ingredient';
 
     addIngredients([
       {
@@ -53,7 +65,60 @@ function ShoppingList() {
       },
     ]);
 
+    showToast(
+      `Added ${ingredientName} (${amountLabel}) to your shopping list.`,
+      { type: 'success' }
+    );
+
     setQuantity(1);
+  }
+
+  function handleRemoveIngredient(item) {
+    removeIngredient(item.id);
+    showToast(`Removed ${item.name} from your shopping list.`, {
+      type: 'info',
+    });
+  }
+
+  function handleQuantityCommit(item, quantity) {
+    showToast(`Updated ${item.name} to ${quantity} ${item.unit}.`, {
+      type: 'info',
+    });
+  }
+
+  function handleToggleBought(item) {
+    toggleBought(item.id);
+    showToast(
+      item.bought
+        ? `Marked ${item.name} as not bought.`
+        : `Marked ${item.name} as bought.`,
+      { type: 'info' }
+    );
+  }
+
+  function handleClearBought() {
+    const count = shoppingList.filter((item) => item.bought).length;
+
+    clearBought();
+
+    if (count > 0) {
+      showToast(`Cleared ${count} purchased item${count === 1 ? '' : 's'}.`, {
+        type: 'success',
+      });
+    }
+  }
+
+  function handleClearAll() {
+    const count = shoppingList.length;
+
+    clearAll();
+
+    if (count > 0) {
+      showToast(
+        `Cleared ${count} item${count === 1 ? '' : 's'} from your shopping list.`,
+        { type: 'success' }
+      );
+    }
   }
 
   return (
@@ -131,7 +196,7 @@ function ShoppingList() {
                   <input
                     type="checkbox"
                     checked={item.bought}
-                    onChange={() => toggleBought(item.id)}
+                    onChange={() => handleToggleBought(item)}
                   />
 
                   <span
@@ -160,10 +225,29 @@ function ShoppingList() {
                   onChange={(event) =>
                     updateQuantity(item.id, event.target.value)
                   }
+                  onFocus={(event) => {
+                    event.currentTarget.dataset.previousValue =
+                      event.currentTarget.value;
+                  }}
+                  onBlur={(event) => {
+                    const value = Number(event.currentTarget.value);
+
+                    if (
+                      event.currentTarget.value !==
+                        event.currentTarget.dataset.previousValue &&
+                      Number.isFinite(value) &&
+                      value > 0
+                    ) {
+                      handleQuantityCommit(item, value);
+                    }
+                  }}
                 />
                 <span>{item.unit}</span>
 
-                <button type="button" onClick={() => removeIngredient(item.id)}>
+                <button
+                  type="button"
+                  onClick={() => handleRemoveIngredient(item)}
+                >
                   Remove
                 </button>
               </li>
@@ -174,18 +258,23 @@ function ShoppingList() {
 
       <button
         type="button"
-        onClick={clearBought}
+        onClick={handleClearBought}
         disabled={!shoppingList.some((item) => item.bought)}
       >
         Clear Purchased
       </button>
       <button
         type="button"
-        onClick={clearAll}
+        onClick={handleClearAll}
         disabled={shoppingList.length === 0}
       >
         Clear All
       </button>
+
+      <section className="shoppingListPage__notes">
+        <h2>Daily notes</h2>
+        <FlipNotepad className="shoppingListPage__notepad" />
+      </section>
     </div>
   );
 }
