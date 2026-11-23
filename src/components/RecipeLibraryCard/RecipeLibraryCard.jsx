@@ -10,30 +10,29 @@ function RecipeLibraryCard({ recipe, onAddIngredients }) {
       <h3>Ingredients:</h3>
 
       <ul className="recipeIngredients">
-        {recipe.ingredients.map((item) => {
+        {recipe.ingredients.map((item, index) => {
           const ingredient = ingredientLibrary.find((i) => i.id === item.id);
 
           return (
-            <li key={item.id}>
+            <li key={`${item.id}-${index}`}>
               {ingredient?.name} - {item.quantity} {ingredient?.unit}
             </li>
           );
         })}
       </ul>
 
-      <Link
-        className="recipeInstructionButton"
-        to={`/TODO?recipe=${encodeURIComponent(recipe.id)}`}
-      >
-        Instruction
-      </Link>
+      <div className="recipeLibraryCardActions">
+        <Link
+          className="recipeInstructionButton"
+          to={`/TODO?recipe=${encodeURIComponent(recipe.id)}`}
+        >
+          Instruction
+        </Link>
 
-      <button
-        type="button"
-        onClick={() => onAddIngredients(recipe.ingredients)}
-      >
-        Add to shopping List
-      </button>
+        <button type="button" onClick={() => onAddIngredients(recipe)}>
+          Add to shopping List
+        </button>
+      </div>
     </article>
   );
 }

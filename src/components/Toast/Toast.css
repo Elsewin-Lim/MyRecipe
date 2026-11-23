@@ -29,15 +29,15 @@
   animation: Toast-in 180ms ease-out;
 }
 
-.Toast--success {
+.Toast.success {
   border-left-color: #16a34a;
 }
 
-.Toast--warning {
+.Toast.warning {
   border-left-color: #d97706;
 }
 
-.Toast--error {
+.Toast.error {
   border-left-color: #dc2626;
 }
 

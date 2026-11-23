@@ -99,9 +99,7 @@ export default function ConfirmDialog({
           <button
             ref={confirmRef}
             type="button"
-            className={`Dialog__button Dialog__button--primary${
-              danger ? ' Dialog__button--danger' : ''
-            }`}
+            className={`Dialog__button ${danger ? 'danger' : 'primary'}`}
             onClick={() => onConfirmRef.current?.()}
           >
             {confirmLabel}

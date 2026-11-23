@@ -37,7 +37,7 @@ function ImageSection() {
         <figcaption>A wide image with a caption.</figcaption>
       </figure>
 
-      <figure className="book-test__figure book-test__figure--tall">
+      <figure className="book-test__figure tall">
         <img src={TEST_IMAGES.page} alt="Tall test" loading="eager" />
         <figcaption>A tall image, kept together with its caption.</figcaption>
       </figure>
@@ -107,7 +107,7 @@ function TableSection() {
 
 function LongValueSection() {
   return (
-    <article className="book-test__entry book-test__entry--forced">
+    <article className="book-test__entry forced">
       <h2>Long unbroken value</h2>
       <p className="book-test__long-value">{TEST_LONG_VALUE}</p>
     </article>
@@ -116,7 +116,7 @@ function LongValueSection() {
 
 function ForcedBreakSection() {
   return (
-    <article className="book-test__entry book-test__entry--forced">
+    <article className="book-test__entry forced">
       <h2>Forced page break</h2>
       <p>
         This entry has <code>break-before: page</code>. It should always start a
@@ -148,7 +148,7 @@ function NoBreakSection() {
 export default function BookTestContent() {
   return (
     <>
-      <article className="book-test__entry book-test__entry--first">
+      <article className="book-test__entry first">
         <h1>Book pagination test</h1>
         <p className="book-test__meta">
           Images, textareas, tables, forced breaks, and long unbroken values.

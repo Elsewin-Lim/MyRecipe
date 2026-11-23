@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ingredientLibrary } from '../../data/recipe';
 import { useRecipe } from '../../context/recipeContext';
+import { useStore } from '../../context/useStore';
 import './ShoppingList.css';
 
 function ShoppingList() {
@@ -13,6 +14,7 @@ function ShoppingList() {
     clearBought,
     clearAll,
   } = useRecipe();
+  const { showToast } = useStore();
 
   const [selectedIngredient, setSelectedIngredient] = useState('rice');
   const [quantity, setQuantity] = useState(1);
@@ -43,6 +45,10 @@ function ShoppingList() {
     const amount = Number(quantity);
 
     if (!Number.isFinite(amount) || amount <= 0) {
+      showToast('Enter a quantity greater than zero', {
+        id: 'shopping-add-invalid',
+        type: 'warning',
+      });
       return;
     }
 
@@ -53,7 +59,41 @@ function ShoppingList() {
       },
     ]);
 
+    const ingredient = ingredientLibrary.find(
+      (item) => item.id === selectedIngredient
+    );
+
+    showToast(`${ingredient?.name ?? 'Ingredient'} added to shopping list`, {
+      id: 'shopping-add',
+      type: 'success',
+    });
+
     setQuantity(1);
+  }
+
+  function handleRemoveIngredient(item) {
+    removeIngredient(item.id);
+    showToast(`${item.name} removed from shopping list`, {
+      id: 'shopping-remove',
+      type: 'success',
+    });
+  }
+
+  function handleClearBought() {
+    const boughtCount = shoppingList.filter((item) => item.bought).length;
+    clearBought();
+    showToast(
+      `${boughtCount} purchased ${boughtCount === 1 ? 'item' : 'items'} cleared`,
+      { id: 'shopping-clear-bought', type: 'success' }
+    );
+  }
+
+  function handleClearAll() {
+    clearAll();
+    showToast('Shopping list cleared', {
+      id: 'shopping-clear-all',
+      type: 'success',
+    });
   }
 
   return (
@@ -119,15 +159,19 @@ function ShoppingList() {
       </form>
 
       {shoppingList.length === 0 ? (
-        <p>Your shopping list is empty.</p>
+        <p className="shoppingListEmpty">Your shopping list is empty.</p>
       ) : (
         <>
-          {visibleItems.length === 0 && <p>No ingredients in this category.</p>}
+          {visibleItems.length === 0 && (
+            <p className="shoppingListEmpty">
+              No ingredients in this category.
+            </p>
+          )}
 
           <ul>
             {visibleItems.map((item) => (
               <li key={item.id}>
-                <label>
+                <label className="shoppingItemLabel">
                   <input
                     type="checkbox"
                     checked={item.bought}
@@ -135,11 +179,12 @@ function ShoppingList() {
                   />
 
                   <span
+                    className="shoppingItemName"
                     style={{
                       textDecoration: item.bought ? 'line-through' : 'none',
                     }}
                   >
-                    {item.name} - {item.quantity} {item.unit}
+                    {item.name}
                     <small>
                       {' ('}
                       {ingredientLibrary.find(
@@ -152,40 +197,51 @@ function ShoppingList() {
                   </span>
                 </label>
 
-                <input
-                  type="number"
-                  min="1"
-                  step="1"
-                  value={item.quantity}
-                  onChange={(event) =>
-                    updateQuantity(item.id, event.target.value)
-                  }
-                />
-                <span>{item.unit}</span>
+                <div className="shoppingItemControls">
+                  <input
+                    type="number"
+                    min="1"
+                    step="1"
+                    aria-label={`Quantity for ${item.name}`}
+                    value={item.quantity}
+                    onChange={(event) =>
+                      updateQuantity(item.id, event.target.value)
+                    }
+                  />
+                  <span className="shoppingItemUnit">{item.unit}</span>
 
-                <button type="button" onClick={() => removeIngredient(item.id)}>
-                  Remove
-                </button>
+                  <button
+                    type="button"
+                    className="shoppingItemRemove"
+                    onClick={() => handleRemoveIngredient(item)}
+                  >
+                    Remove
+                  </button>
+                </div>
               </li>
             ))}
           </ul>
         </>
       )}
 
-      <button
-        type="button"
-        onClick={clearBought}
-        disabled={!shoppingList.some((item) => item.bought)}
-      >
-        Clear Purchased
-      </button>
-      <button
-        type="button"
-        onClick={clearAll}
-        disabled={shoppingList.length === 0}
-      >
-        Clear All
-      </button>
+      <div className="shoppingListActions">
+        <button
+          type="button"
+          className="shoppingListButton"
+          onClick={handleClearBought}
+          disabled={!shoppingList.some((item) => item.bought)}
+        >
+          Clear Purchased
+        </button>
+        <button
+          type="button"
+          className="shoppingListButton danger"
+          onClick={handleClearAll}
+          disabled={shoppingList.length === 0}
+        >
+          Clear All
+        </button>
+      </div>
     </div>
   );
 }

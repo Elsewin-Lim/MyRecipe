@@ -1,91 +1,193 @@
 .cookingGuide {
-  max-width: 1100px;
-  margin: 32px auto;
-  padding: 0 20px;
+  container-type: inline-size;
+  width: 100%;
+  max-width: min(100%, 62em);
+  margin: clamp(1.25em, 3%, 2em) auto 0;
+  padding-inline: clamp(1em, 2.5%, 1.6em);
+  text-align: left;
+}
+
+.cookingGuide > h1 {
+  margin: 0 0 clamp(0.75em, 1.5cqw, 1em);
+  font-size: clamp(1.6em, 5cqw, 3em);
+  overflow-wrap: anywhere;
+}
+
+.cookingGuide.empty {
+  margin-top: clamp(2em, 6%, 4em);
+  text-align: center;
+}
+
+.cookingGuide.empty p {
+  margin-top: 0.5em;
 }
 
 .cookingTimer,
 .cookingStep {
+  padding: clamp(1em, 2.4cqw, 1.5em);
   background: #115e7d;
-  border: 2px solid #0a3445;
-  border-radius: 12px;
+  border: 0.125em solid #0a3445;
+  border-radius: clamp(0.6em, 1.4cqw, 0.8em);
   color: white;
-  padding: 24px;
 }
 
 .cookingTimer {
+  width: 100%;
+  margin-bottom: clamp(0.9em, 2cqw, 1.25em);
   text-align: center;
 }
 
 .cookingTimer h2,
 .cookingStep h2 {
   margin-top: 0;
+  font-size: clamp(1.05em, 2.2cqw, 1.35em);
 }
 
 .cookingTimerDisplay {
-  font-size: 3rem;
+  margin-bottom: clamp(0.6em, 1.5cqw, 1em);
+  font-size: clamp(2em, 6cqw, 3em);
   font-variant-numeric: tabular-nums;
-  margin-bottom: 16px;
 }
 
 .cookingTimer form {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: clamp(0.75em, 1.8cqw, 1em);
 }
 
-.cookingTimer input {
-  width: 5rem;
-  padding: 8px;
+.cookingTimerFields {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(0.5em, 1.2cqw, 0.8em);
+}
+
+.cookingTimerField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  font-size: clamp(0.8em, 1.6cqw, 0.9em);
+}
+
+.cookingTimerField label {
+  text-align: center;
+}
+
+.cookingTimerField input {
+  width: clamp(3.5em, 8cqw, 5em);
+  padding: 0.4em 0.5em;
+  font: inherit;
+  font-size: 1.15em;
+  color: #242424;
+  background: white;
+  border: 1px solid #0a3445;
+  border-radius: 0.4em;
+  text-align: center;
+}
+
+.cookingTimerActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.cookingTimerActions button {
+  padding: 0.55em 1.2em;
+  font: inherit;
+  font-weight: 600;
+  color: white;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.cookingTimerActions button:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.cookingTimerActions .cookingTimerStart {
+  color: #0a3445;
+  background: white;
+  border-color: white;
+}
+
+.cookingTimerActions .cookingTimerStart:hover {
+  background: #e8f2f6;
 }
 
 .cookingGuideRow {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-top: 16px;
+  grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+  align-items: stretch;
+  gap: clamp(0.75em, 2cqw, 1.25em);
+  margin: 10% 0;
 }
 
-.cookingNext {
-  min-height: 120px;
-  border: 0;
-  border-radius: 12px;
-  background: white;
-  color: #242424;
-  font-size: 1.25rem;
-  font-weight: 600;
-  cursor: pointer;
+.cookingGuideRow.single {
+  grid-template-columns: minmax(0, 1fr);
 }
 
-.cookingNext:hover {
-  background: #e8f2f6;
+.cookingDivider {
+  align-self: stretch;
+  width: 1px;
+  background: currentColor;
+  opacity: 0.3;
 }
 
-@media (max-width: 600px) {
-  .cookingGuideRow {
-    grid-template-columns: 1fr;
-  }
+.cookingStep {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.cookingStep p {
+  overflow-wrap: anywhere;
 }
 
 .cookingStepControls {
   display: grid;
-  gap: 12px;
+  align-content: center;
+  gap: clamp(0.5em, 1.2cqw, 0.8em);
+  min-width: 0;
 }
 
-.cookingStepControls .cookingNext {
-  min-height: 56px;
+.cookingNext {
+  width: 100%;
+  min-height: clamp(3em, 7cqw, 3.5em);
+  padding: 0.5em 0.75em;
+  font: inherit;
+  font-size: clamp(1em, 2cqw, 1.2em);
+  font-weight: 600;
+  color: white;
+  background: #115e7d;
+  border: 0.125em solid #0a3445;
+  border-radius: clamp(0.5em, 1.2cqw, 0.75em);
+  cursor: pointer;
+  white-space: normal;
+  transition: background-color 150ms ease;
 }
 
-.cookingStepControls .cookingNext:disabled {
+.cookingNext:hover {
+  background: #0f526c;
+}
+
+.cookingNext:disabled {
   opacity: 0.45;
   cursor: default;
 }
 
-.cookingTimer input {
-  background: white;
-  color: #242424;
-  border: 1px solid #0a3445;
-  border-radius: 6px;
+@media (max-width: 40em) {
+  .cookingGuideRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cookingDivider {
+    width: 100%;
+    height: 1px;
+  }
 }

@@ -1,10 +1,20 @@
 import { recipes } from '../../data/recipe';
 import { useRecipe } from '../../context/recipeContext';
+import { useStore } from '../../context/useStore';
 import RecipeLibraryCard from '../../components/RecipeLibraryCard/RecipeLibraryCard';
 import './Recipes.css';
 
 function Recipes() {
   const { addIngredients } = useRecipe();
+  const { showToast } = useStore();
+
+  const handleAddIngredients = (recipe) => {
+    addIngredients(recipe.ingredients);
+    showToast(`${recipe.name} added to shopping list`, {
+      id: 'recipe-add-ingredients',
+      type: 'success',
+    });
+  };
 
   return (
     <div className="recipesPage">
@@ -16,7 +26,7 @@ function Recipes() {
           <RecipeLibraryCard
             key={recipe.id}
             recipe={recipe}
-            onAddIngredients={addIngredients}
+            onAddIngredients={handleAddIngredients}
           />
         ))}
       </div>
