@@ -6,9 +6,7 @@ export default function RecipeEntry({ recipe, index, ingredientById }) {
   ].filter(Boolean);
 
   return (
-    <article
-      className={`recipe-entry${index === 0 ? ' recipe-entry--first' : ''}`}
-    >
+    <article className={`recipe-entry${index === 0 ? ' first' : ''}`}>
       <h1>{recipe.name}</h1>
       {meta.length > 0 && <p className="recipe-meta">{meta.join(' · ')}</p>}
 

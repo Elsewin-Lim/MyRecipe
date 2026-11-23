@@ -1,40 +1,184 @@
 .shoppingListPage {
+  container-type: inline-size;
   width: 100%;
-  max-width: 800px;
+  max-width: min(100%, 46em);
   margin: 0 auto;
-  padding: 24px;
+  padding-block: clamp(1em, 2.5%, 1.5em);
+  padding-inline: clamp(1em, 2.5%, 1.6em);
   text-align: left;
+}
+
+.shoppingListPage > h1 {
+  margin: 0 0 0.35em;
+  font-size: clamp(1.6em, 5cqw, 3em);
 }
 
 .shoppingListPage form {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  max-width: 400px;
-  margin-bottom: 24px;
+  gap: clamp(0.35em, 1cqw, 0.55em);
+  width: 100%;
+  max-width: min(100%, 22em);
+  margin: clamp(0.75em, 2cqw, 1.25em) 0 clamp(1.25em, 3cqw, 1.6em);
+}
+
+.shoppingListPage form h2 {
+  margin: 0 0 0.25em;
+  font-size: clamp(1.05em, 2.2cqw, 1.3em);
+}
+
+.shoppingListPage form label {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.shoppingListPage form select,
+.shoppingListPage form input {
+  width: 100%;
+  padding: clamp(0.5em, 1cqw, 0.7em);
+  font: inherit;
+  color: var(--text-h);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0.5em;
+}
+
+.shoppingListPage form button {
+  margin-top: 0.35em;
+  padding: clamp(0.6em, 1.2cqw, 0.8em);
+  font: inherit;
+  font-weight: 600;
+  color: white;
+  background: #16a34a;
+  border: 1px solid transparent;
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.shoppingListPage form button:hover {
+  background: #15803d;
 }
 
 .shoppingListPage ul {
-  list-style: none;
-  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: clamp(0.4em, 1cqw, 0.6em);
+  padding: 0;
+  margin: 0 0 clamp(1em, 2cqw, 1.25em);
+  list-style: none;
 }
 
 .shoppingListPage li {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: clamp(0.35em, 1cqw, 0.6em);
+  min-width: 0;
+  padding: clamp(0.35em, 1cqw, 0.55em) 0;
+  border-bottom: 1px solid var(--border);
 }
 
-.shoppingListPage li label {
-  flex: 1;
+.shoppingListPage li:last-child {
+  border-bottom: 0;
+}
+
+.shoppingItemLabel {
+  display: flex;
+  flex: 1 1 12em;
+  align-items: center;
+  gap: 0.5em;
+  min-width: 0;
+}
+
+.shoppingItemLabel input[type='checkbox'] {
+  flex: none;
+  width: 1.1em;
+  height: 1.1em;
+  accent-color: #16a34a;
+}
+
+.shoppingItemName {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.shoppingItemName small {
+  font-size: 0.85em;
+  color: var(--text);
+}
+
+.shoppingItemControls {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.4em;
+  margin-left: auto;
 }
 
-.shoppingListPage li input[type='number'] {
-  width: 80px;
+.shoppingItemControls input[type='number'] {
+  width: 5em;
+  padding: 0.4em 0.5em;
+  font: inherit;
+  color: var(--text-h);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0.4em;
+}
+
+.shoppingItemUnit {
+  color: var(--text);
+}
+
+.shoppingItemRemove,
+.shoppingListButton {
+  padding: 0.45em 0.8em;
+  font: inherit;
+  color: var(--text-h);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 0.45em;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+}
+
+.shoppingItemRemove:hover {
+  color: #dc2626;
+  border-color: #dc2626;
+}
+
+.shoppingListActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6em;
+  margin-top: clamp(0.75em, 2cqw, 1em);
+}
+
+.shoppingListButton:hover {
+  background: var(--accent-bg);
+}
+
+.shoppingListButton.danger:hover {
+  color: #dc2626;
+  border-color: #dc2626;
+}
+
+.shoppingListPage button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.shoppingListEmpty {
+  margin: 0.5em 0;
+}
+
+@media (max-width: 40em) {
+  .shoppingItemControls {
+    width: 100%;
+    margin-left: 0;
+    justify-content: flex-end;
+  }
 }

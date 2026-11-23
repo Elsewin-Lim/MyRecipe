@@ -64,33 +64,50 @@ function RecipeForm({
     <form onSubmit={handleSubmit} className="add-recipe-form">
       <h2>{isEditing ? 'Edit Recipe' : 'Add New Recipe'}</h2>
 
+      <label htmlFor="recipe-title">Recipe title</label>
+
       <input
+        id="recipe-title"
         type="text"
-        placeholder="Recipe title"
+        placeholder="e.g. Chicken Curry"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         required
       />
 
-      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+      <label htmlFor="recipe-category">Category</label>
+
+      <select
+        id="recipe-category"
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+      >
         <option value="Breakfast">Breakfast</option>
         <option value="Lunch">Lunch</option>
         <option value="Dinner">Dinner</option>
         <option value="Dessert">Dessert</option>
       </select>
 
+      <label htmlFor="recipe-time">Cooking time (minutes)</label>
+
       <input
+        id="recipe-time"
         type="number"
-        placeholder="Cooking time (minutes)"
+        placeholder="e.g. 30"
         value={cookingTime}
         onChange={(e) => setCookingTime(e.target.value)}
         min="1"
         required
       />
 
+      <label htmlFor="recipe-ingredients">
+        Ingredients (separate with commas)
+      </label>
+
       <input
+        id="recipe-ingredients"
         type="text"
-        placeholder="Ingredients (separate with commas)"
+        placeholder="e.g. rice, egg, garlic"
         value={ingredients}
         onChange={(e) => setIngredients(e.target.value)}
         required

@@ -9,6 +9,7 @@ import {
   saveRecipe,
   deleteRecipe as deleteRecipeFromDB,
 } from '../../data/recipeDatabase';
+import { useStore } from '../../context/useStore';
 import './Edit.css';
 
 function Edit() {
@@ -18,6 +19,7 @@ function Edit() {
   const [selectedIngredient, setSelectedIngredient] = useState('All');
   const [editingRecipe, setEditingRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { showToast } = useStore();
 
   // Load recipes from IndexedDB
   useEffect(() => {
@@ -45,18 +47,36 @@ function Edit() {
 
       await saveRecipe(recipe);
       setRecipes((prev) => [...prev, recipe]);
+      showToast(`"${recipe.title}" added`, {
+        id: 'recipe-add',
+        type: 'success',
+      });
     } catch (error) {
       console.error('Error adding recipe:', error);
+      showToast('Could not add recipe', {
+        id: 'recipe-add-error',
+        type: 'error',
+      });
     }
   };
 
   // Delete recipe
   const handleDeleteRecipe = async (id) => {
+    const deletedRecipe = recipes.find((recipe) => recipe.id === id);
+
     try {
       await deleteRecipeFromDB(id);
       setRecipes((prev) => prev.filter((recipe) => recipe.id !== id));
+      showToast(
+        deletedRecipe ? `"${deletedRecipe.title}" deleted` : 'Recipe deleted',
+        { id: 'recipe-delete', type: 'success' }
+      );
     } catch (error) {
       console.error('Error deleting recipe:', error);
+      showToast('Could not delete recipe', {
+        id: 'recipe-delete-error',
+        type: 'error',
+      });
     }
   };
 
@@ -77,8 +97,16 @@ function Edit() {
       );
 
       setEditingRecipe(null);
+      showToast(`"${updatedRecipe.title}" updated`, {
+        id: 'recipe-update',
+        type: 'success',
+      });
     } catch (error) {
       console.error('Error updating recipe:', error);
+      showToast('Could not update recipe', {
+        id: 'recipe-update-error',
+        type: 'error',
+      });
     }
   };
 
@@ -110,7 +138,11 @@ function Edit() {
   });
 
   if (loading) {
-    return <div className="editPage">Loading recipes...</div>;
+    return (
+      <div className="editPage">
+        <p className="editEmpty">Loading recipes...</p>
+      </div>
+    );
   }
 
   return (
@@ -138,11 +170,15 @@ function Edit() {
         onCancelEdit={() => setEditingRecipe(null)}
       />
 
-      <RecipeList
-        recipes={filteredRecipes}
-        onDeleteRecipe={handleDeleteRecipe}
-        onEditRecipe={editRecipe}
-      />
+      {filteredRecipes.length === 0 ? (
+        <p className="editEmpty">No recipes match your filters yet.</p>
+      ) : (
+        <RecipeList
+          recipes={filteredRecipes}
+          onDeleteRecipe={handleDeleteRecipe}
+          onEditRecipe={editRecipe}
+        />
+      )}
     </div>
   );
 }

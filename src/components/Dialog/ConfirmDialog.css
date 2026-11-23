@@ -51,19 +51,24 @@
   background: var(--accent-bg);
 }
 
-.Dialog__button--primary {
+.Dialog__button.primary {
   color: #fff;
   background: var(--accent);
   border-color: var(--accent);
 }
 
-.Dialog__button--primary:hover {
+.Dialog__button.primary:hover {
   filter: brightness(1.08);
 }
 
-.Dialog__button--danger {
+.Dialog__button.danger {
+  color: #fff;
   background: #dc2626;
   border-color: #dc2626;
+}
+
+.Dialog__button.danger:hover {
+  filter: brightness(1.08);
 }
 
 .Dialog__button:focus-visible {

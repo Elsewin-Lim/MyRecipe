@@ -26,9 +26,7 @@ export default function Toast({
     return () => window.clearTimeout(timer);
   }, [duration, paused, message]);
 
-  const classes = ['Toast', `Toast--${safeType}`, className]
-    .filter(Boolean)
-    .join(' ');
+  const classes = ['Toast', safeType, className].filter(Boolean).join(' ');
   const isError = safeType === 'error';
 
   return (

@@ -67,6 +67,22 @@ body {
   margin: 0;
 }
 
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 0.15em solid var(--accent);
+  outline-offset: 0.15em;
+}
+
 #root {
   max-width: 100%;
   margin: 0 auto;
@@ -85,6 +101,11 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+/* Only the landing page is vertically centered; content pages start at the top. */
+#root > main > :not(.landingPage) {
+  margin-bottom: auto;
 }
 
 h1,

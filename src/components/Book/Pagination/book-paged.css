@@ -8,7 +8,7 @@
   break-before: page;
 }
 
-.recipe-entry--first {
+.recipe-entry.first {
   break-before: auto;
 }
 

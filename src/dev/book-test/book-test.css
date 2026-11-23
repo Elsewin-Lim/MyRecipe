@@ -4,11 +4,11 @@
   line-height: 1.5;
 }
 
-.book-test__entry--first {
+.book-test__entry.first {
   margin-top: 0;
 }
 
-.book-test__entry--forced {
+.book-test__entry.forced {
   break-before: page;
 }
 
@@ -49,7 +49,7 @@
   height: auto;
 }
 
-.book-test__figure--tall img {
+.book-test__figure.tall img {
   height: 220px;
   object-fit: cover;
 }

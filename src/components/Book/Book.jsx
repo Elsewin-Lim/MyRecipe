@@ -173,6 +173,8 @@ function Book({
           showCover={true}
           size="stretch"
           startPage={startPage}
+          disableFlipByClick={true}
+          showPageCorners={false}
           onInit={handleInit}
           onFlip={handleFlip}
           onChangeOrientation={handleOrientation}

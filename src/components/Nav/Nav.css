@@ -1,7 +1,23 @@
 .HomeNav {
-  padding: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5em 1em;
+  padding: 0.85em 1em;
   background: #222;
   color: #fff;
-  display: flex;
-  gap: 1rem;
+}
+
+.HomeNav a {
+  padding: 0.3em 0.6em;
+  border-radius: 0.5em;
+  color: inherit;
+  text-decoration: none;
+  line-height: 1.2;
+  transition: background-color 150ms ease;
+}
+
+.HomeNav a:hover,
+.HomeNav a:focus-visible {
+  background: rgba(255, 255, 255, 0.16);
 }
