@@ -1,6 +1,7 @@
-import { Link } from 'react-router';
 import { ingredientLibrary } from '../../data/recipe';
 import FavoriteButton from '../FavoriteButton/FavoriteButton';
+import CookButton from '../CookButton/CookButton';
+import RecipeImageCarousel from '../RecipeImageCarousel/RecipeImageCarousel';
 import './RecipeLibraryCard.css';
 
 function RecipeLibraryCard({ recipe, onAddIngredients, onToggleFavorite }) {
@@ -15,17 +16,7 @@ function RecipeLibraryCard({ recipe, onAddIngredients, onToggleFavorite }) {
       <h2>{title}</h2>
 
       {images.length > 0 && (
-        <div className="recipeLibraryImages">
-          {images.map((src, imageIndex) => (
-            <img
-              key={`${imageIndex}-${src.slice(0, 24)}`}
-              className="recipeLibraryImage"
-              src={src}
-              alt={`${title} — ${imageIndex + 1}`}
-              loading="lazy"
-            />
-          ))}
-        </div>
+        <RecipeImageCarousel images={images} title={title} variant="card" />
       )}
 
       <h3>Ingredients:</h3>
@@ -39,10 +30,13 @@ function RecipeLibraryCard({ recipe, onAddIngredients, onToggleFavorite }) {
           }
 
           const ingredient = ingredientLibrary.find((i) => i.id === item.id);
+          const name = item.name ?? ingredient?.name ?? item.id;
+          const unit = item.unit ?? ingredient?.unit ?? '';
 
           return (
             <li key={`${item.id}-${index}`}>
-              {ingredient?.name ?? item.id} - {item.quantity} {ingredient?.unit}
+              {name} - {item.quantity}
+              {unit ? ` ${unit}` : ''}
             </li>
           );
         })}
@@ -59,12 +53,9 @@ function RecipeLibraryCard({ recipe, onAddIngredients, onToggleFavorite }) {
         )}
 
         {hasInstructions && (
-          <Link
-            className="recipeInstructionButton"
-            to={`/TODO?recipe=${encodeURIComponent(recipe.id)}`}
-          >
-            Instruction
-          </Link>
+          <CookButton className="recipeCookButton" recipeId={recipe.id}>
+            Cook
+          </CookButton>
         )}
 
         {onAddIngredients && (

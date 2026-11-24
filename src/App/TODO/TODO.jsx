@@ -1,7 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { getAllRecipes } from '../../data/recipeDatabase';
+import {
+  clearCookingSession,
+  getCookingSession,
+  updateCookingStep,
+} from '../../data/cookingSession';
+import {
+  instructionSeconds,
+  instructionText,
+  splitSeconds,
+} from '../../data/recipeModel';
 import { useStore } from '../../context/useStore';
+import { useTimer } from '../../context/timerContext';
 import './TODO.css';
 
 function TimerInput({ hour, setHour, minute, setMinute, second, setSecond }) {
@@ -90,40 +101,32 @@ function TimerInput({ hour, setHour, minute, setMinute, second, setSecond }) {
   );
 }
 
-function CookingTimer({ resetRef }) {
-  const [endsAt, setEndsAt] = useState(null);
-  const [secondsLeft, setSecondLeft] = useState(0);
-  const [second, setSecond] = useState(0);
-  const [minute, setMinute] = useState(0);
-  const [hour, setHour] = useState(0);
+function CookingTimer({ initialSeconds = 0 }) {
+  const { isRunning, remainingSeconds, hasFinished, startTimer, clearTimer } =
+    useTimer();
+  const [second, setSecond] = useState(
+    () => splitSeconds(initialSeconds).seconds
+  );
+  const [minute, setMinute] = useState(
+    () => splitSeconds(initialSeconds).minutes
+  );
+  const [hour, setHour] = useState(() => splitSeconds(initialSeconds).hours);
+  const defaultTime = splitSeconds(initialSeconds);
   const { showToast } = useStore();
+  const displaySeconds = isRunning
+    ? remainingSeconds
+    : hasFinished
+      ? 0
+      : initialSeconds;
 
-  useEffect(() => {
-    if (endsAt === null) return;
-
-    const interval = window.setInterval(() => {
-      const remaining = Math.max(0, Math.ceil((endsAt - Date.now()) / 1000));
-      setSecondLeft(remaining);
-
-      if (remaining === 0) {
-        setEndsAt(null);
-        showToast('Cooking timer finished', {
-          id: 'cooking-timer-done',
-          type: 'success',
-        });
-      }
-    }, 250);
-
-    return () => window.clearInterval(interval);
-  }, [endsAt, showToast]);
-
-  function startTimer(event) {
+  function handleStartTimer(event) {
     event.preventDefault();
     const fields = new FormData(event.currentTarget);
     const hours = Number(fields.get('hours'));
     const minutes = Number(fields.get('minutes'));
     const extraSeconds = Number(fields.get('seconds'));
     const seconds = hours * 3600 + minutes * 60 + extraSeconds;
+
     if (!Number.isFinite(seconds) || seconds <= 0) {
       showToast('Set a timer longer than zero', {
         id: 'cooking-timer-invalid',
@@ -132,34 +135,28 @@ function CookingTimer({ resetRef }) {
       return;
     }
 
-    setSecondLeft(seconds);
-    setEndsAt(Date.now() + seconds * 1000);
+    startTimer(seconds);
     showToast('Cooking timer started', {
       id: 'cooking-timer-start',
       type: 'success',
     });
   }
 
-  function resetTimer() {
-    setEndsAt(null);
-    setSecondLeft(0);
-    setHour(0);
-    setMinute(0);
-    setSecond(0);
+  function handleResetTimer() {
+    clearTimer();
+    setHour(defaultTime.hours);
+    setMinute(defaultTime.minutes);
+    setSecond(defaultTime.seconds);
     showToast('Cooking timer reset', {
       id: 'cooking-timer-reset',
       type: 'info',
     });
   }
 
-  useEffect(() => {
-    if (resetRef) resetRef.current = resetTimer;
-  });
-
   const display = [
-    Math.floor(secondsLeft / 3600),
-    Math.floor((secondsLeft % 3600) / 60),
-    secondsLeft % 60,
+    Math.floor(displaySeconds / 3600),
+    Math.floor((displaySeconds % 3600) / 60),
+    displaySeconds % 60,
   ]
     .map((value) => String(value).padStart(2, '0'))
     .join(':');
@@ -170,7 +167,7 @@ function CookingTimer({ resetRef }) {
       <div className="cookingTimerDisplay" role="timer">
         {display}
       </div>
-      <form onSubmit={startTimer}>
+      <form onSubmit={handleStartTimer}>
         <TimerInput
           hour={hour}
           setHour={setHour}
@@ -187,7 +184,7 @@ function CookingTimer({ resetRef }) {
           <button
             className="cookingTimerReset"
             type="button"
-            onClick={resetTimer}
+            onClick={handleResetTimer}
           >
             Reset
           </button>
@@ -197,27 +194,65 @@ function CookingTimer({ resetRef }) {
   );
 }
 
-function CookingGuide({ recipe }) {
-  const [stepIndex, setStepIndex] = useState(0);
-  const timerResetRef = useRef(null);
-  const steps = recipe.instructions ?? [];
+function CookingGuide({ recipe, initialStepIndex = 0 }) {
+  const navigate = useNavigate();
+  const { clearTimer } = useTimer();
+  const steps = (recipe.instructions ?? [])
+    .map((step) => ({
+      text: instructionText(step),
+      seconds: instructionSeconds(step),
+    }))
+    .filter((step) => step.text);
   const hasSteps = steps.length > 0;
-  const finished = hasSteps && stepIndex === steps.length;
+  const lastStepIndex = Math.max(0, steps.length - 1);
+  const safeInitialStep = Math.min(
+    Math.max(0, initialStepIndex),
+    lastStepIndex
+  );
+  const [stepIndex, setStepIndex] = useState(safeInitialStep);
+  const currentStep = hasSteps ? steps[stepIndex] : null;
+  const isLastStep = hasSteps && stepIndex === lastStepIndex;
+  const currentStepSeconds = currentStep?.seconds ?? 0;
+
+  function handleNext() {
+    if (!hasSteps) return;
+
+    if (isLastStep) {
+      clearTimer();
+      clearCookingSession();
+      navigate('/MyRecipe');
+      return;
+    }
+
+    const nextIndex = stepIndex + 1;
+
+    clearTimer();
+    setStepIndex(nextIndex);
+    updateCookingStep(recipe.id, nextIndex);
+  }
+
+  function handlePrevious() {
+    if (!hasSteps || stepIndex === 0) return;
+
+    const previousIndex = stepIndex - 1;
+
+    clearTimer();
+    setStepIndex(previousIndex);
+    updateCookingStep(recipe.id, previousIndex);
+  }
 
   return (
     <main className="cookingGuide">
       <h1>{recipe.title ?? recipe.name}</h1>
-      <CookingTimer resetRef={timerResetRef} />
+      <CookingTimer key={stepIndex} initialSeconds={currentStepSeconds} />
       <div className={`cookingGuideRow${hasSteps ? '' : ' single'}`}>
         <section className="cookingStep" aria-live="polite">
-          {finished ? (
-            <h2>Recipe Complete!</h2>
-          ) : hasSteps ? (
+          {hasSteps ? (
             <>
               <h2>
                 Step {stepIndex + 1} of {steps.length}
               </h2>
-              <p>{steps[stepIndex]}</p>
+              <p>{currentStep.text}</p>
             </>
           ) : (
             <p>Cooking instructions haven't been added for this recipe yet.</p>
@@ -232,27 +267,16 @@ function CookingGuide({ recipe }) {
               <button
                 className="cookingNext"
                 type="button"
-                onClick={() => {
-                  const isFinishing =
-                    !finished && stepIndex === steps.length - 1;
-                  setStepIndex(finished ? 0 : stepIndex + 1);
-                  if (isFinishing || finished) {
-                    timerResetRef.current?.();
-                  }
-                }}
+                onClick={handleNext}
               >
-                {finished
-                  ? 'Start over'
-                  : stepIndex === steps.length - 1
-                    ? 'Finish recipe'
-                    : 'Next step →'}
+                {isLastStep ? 'Finish recipe' : 'Next step →'}
               </button>
 
               <button
                 className="cookingNext"
                 type="button"
                 disabled={stepIndex === 0}
-                onClick={() => setStepIndex((index) => Math.max(0, index - 1))}
+                onClick={handlePrevious}
               >
                 ← Previous step
               </button>
@@ -265,8 +289,8 @@ function CookingGuide({ recipe }) {
 }
 
 export default function TODO() {
-  const [searchParams] = useSearchParams();
-  const recipeId = searchParams.get('recipe');
+  const [session] = useState(() => getCookingSession());
+  const recipeId = session?.recipeId ?? null;
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -304,10 +328,16 @@ export default function TODO() {
     return (
       <main className="cookingGuide empty">
         <h1>Cooking instructions</h1>
-        <p>Open a recipe card and click Instruction to get started.</p>
+        <p>Open a recipe card and click Cook to get started.</p>
       </main>
     );
   }
 
-  return <CookingGuide key={recipe.id} recipe={recipe} />;
+  return (
+    <CookingGuide
+      key={recipe.id}
+      recipe={recipe}
+      initialStepIndex={session?.stepIndex ?? 0}
+    />
+  );
 }
