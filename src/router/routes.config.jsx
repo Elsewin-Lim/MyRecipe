@@ -28,5 +28,5 @@ export const routeList = Object.keys(pages)
 export const customRoutes = [
   { path: '/', element: <Navigate to="/MyRecipe" replace /> },
   ...routeList,
-  { path: '*', element: <div>Page Not FoundðŸ¥²</div> },
+  { path: '*', element: <div>Page Not Found</div> },
 ];

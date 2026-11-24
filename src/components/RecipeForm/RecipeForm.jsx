@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ImageUploader from '../ImageUploader/ImageUploader';
 
 function RecipeForm({
   onAddRecipe,
@@ -18,6 +19,10 @@ function RecipeForm({
   const [ingredients, setIngredients] = useState(
     editingRecipe ? editingRecipe.ingredients.join(', ') : ''
   );
+  const [instructions, setInstructions] = useState(
+    editingRecipe?.instructions?.join('\n') ?? ''
+  );
+  const [images, setImages] = useState(editingRecipe?.images ?? []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,11 +36,18 @@ function RecipeForm({
       .map((item) => item.trim())
       .filter((item) => item !== '');
 
+    const instructionList = instructions
+      .split('\n')
+      .map((step) => step.trim())
+      .filter((step) => step !== '');
+
     const recipe = {
       title: title.trim(),
       category,
       cookingTime: Number(cookingTime),
       ingredients: ingredientList,
+      instructions: instructionList,
+      images,
     };
 
     try {
@@ -55,6 +67,8 @@ function RecipeForm({
       setCategory('Breakfast');
       setCookingTime('');
       setIngredients('');
+      setInstructions('');
+      setImages([]);
     } catch (error) {
       console.error('Error saving recipe:', error);
     }
@@ -112,6 +126,22 @@ function RecipeForm({
         onChange={(e) => setIngredients(e.target.value)}
         required
       />
+
+      <label htmlFor="recipe-instructions">
+        Instructions (one step per line)
+      </label>
+
+      <textarea
+        id="recipe-instructions"
+        rows="4"
+        placeholder={'e.g. Cook the rice.\nBeat the eggs.'}
+        value={instructions}
+        onChange={(e) => setInstructions(e.target.value)}
+      />
+
+      <label>Recipe images</label>
+
+      <ImageUploader images={images} onChange={setImages} />
 
       <button type="submit">
         {isEditing ? 'Update Recipe' : 'Add Recipe'}

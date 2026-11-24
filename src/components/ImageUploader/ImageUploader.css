@@ -1,0 +1,91 @@
+.imageUploader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.imageDropzone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 5.5em;
+  padding: 1em;
+  text-align: center;
+  color: var(--text);
+  background: var(--bg);
+  border: 2px dashed var(--border);
+  border-radius: 0.6em;
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.imageDropzone:hover,
+.imageDropzone:focus-visible,
+.imageDropzone.is-dragging {
+  outline: none;
+  color: var(--text-h);
+  background: var(--accent-bg);
+  border-color: var(--accent);
+}
+
+.imageDropzoneText {
+  font-size: 0.9em;
+  line-height: 1.4;
+  pointer-events: none;
+}
+
+.imageUploaderError {
+  margin: 0;
+  font-size: 0.85em;
+  color: #ff8a8a;
+}
+
+.imagePreviewList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.imagePreview {
+  position: relative;
+  width: 6em;
+  height: 6em;
+}
+
+.imagePreview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.5em;
+  border: 1px solid var(--border);
+}
+
+.imagePreviewRemove {
+  position: absolute;
+  top: -0.4em;
+  right: -0.4em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5em;
+  height: 1.5em;
+  padding: 0;
+  font: inherit;
+  font-size: 1em;
+  line-height: 1;
+  color: white;
+  background: #d33;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.imagePreviewRemove:hover {
+  background: #b22;
+}
