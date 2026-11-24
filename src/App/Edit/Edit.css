@@ -73,6 +73,87 @@
   color: var(--text-h);
 }
 
+.recipe-ingredient-rows,
+.recipe-instruction-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.recipe-ingredient-rows legend,
+.recipe-instruction-rows legend {
+  margin-bottom: 0.4em;
+  padding: 0;
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.ingredient-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em;
+  align-items: center;
+}
+
+.ingredient-row .ingredient-name {
+  flex: 2 1 10em;
+}
+
+.ingredient-row .ingredient-quantity {
+  flex: 0 1 6em;
+  width: auto;
+  min-width: 0;
+}
+
+.ingredient-row .ingredient-unit-field {
+  flex: 0 1 6em;
+}
+
+.ingredient-row .comboBoxInput {
+  width: 100%;
+}
+
+.instruction-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45em;
+  padding: 0.6em;
+  border: 1px solid var(--border);
+  border-radius: 0.5em;
+}
+
+.instruction-text {
+  width: 100%;
+}
+
+.instruction-time {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  align-items: flex-end;
+}
+
+.instruction-time-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  margin: 0;
+  font-size: 0.75em;
+}
+
+.instruction-time-field input {
+  width: 5em;
+}
+
+.instruction-row .ingredient-remove {
+  margin-left: auto;
+}
+
 .add-recipe-form button {
   padding: clamp(0.6em, 1.2cqw, 0.75em);
   font: inherit;
@@ -98,6 +179,45 @@
 
 .add-recipe-form .cancel-button:hover {
   background: var(--accent-bg);
+}
+
+.add-recipe-form .ingredient-remove,
+.add-recipe-form .ingredient-add,
+.add-recipe-form .instruction-add {
+  margin-left: auto;
+  padding: 0.45em 0.65em;
+  font-size: 0.8em;
+}
+
+.add-recipe-form .ingredient-remove {
+  color: #b91c1c;
+  background: transparent;
+  border-color: currentColor;
+}
+
+.add-recipe-form .ingredient-remove:hover {
+  color: #7f1d1d;
+  background: #fee2e2;
+}
+
+.add-recipe-form .ingredient-remove:disabled {
+  color: var(--text);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.add-recipe-form .ingredient-add,
+.add-recipe-form .instruction-add {
+  align-self: flex-start;
+  margin-left: 0;
+  color: var(--text-h);
+  background: var(--accent-bg);
+  border-color: var(--border);
+}
+
+.add-recipe-form .ingredient-add:hover,
+.add-recipe-form .instruction-add:hover {
+  background: var(--border);
 }
 
 .recipe-list {

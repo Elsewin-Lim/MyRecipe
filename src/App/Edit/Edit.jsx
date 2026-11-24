@@ -9,8 +9,27 @@ import {
   saveRecipe,
   deleteRecipe as deleteRecipeFromDB,
 } from '../../data/recipeDatabase';
+import { ingredientLibrary } from '../../data/recipe';
+import {
+  clearEditingRecipeId,
+  readEditingRecipeId,
+  writeEditingRecipeId,
+} from '../../data/editingSession';
 import { useStore } from '../../context/useStore';
 import './Edit.css';
+
+const ingredientById = new Map(
+  ingredientLibrary.map((ingredient) => [ingredient.id, ingredient])
+);
+
+function ingredientLabel(item) {
+  if (typeof item === 'string') return item;
+  return item.name ?? ingredientById.get(item.id)?.name ?? item.id;
+}
+
+function ingredientKey(item) {
+  return typeof item === 'string' ? item : item.id;
+}
 
 function Edit() {
   const [recipes, setRecipes] = useState([]);
@@ -27,6 +46,17 @@ function Edit() {
       try {
         const savedRecipes = await getAllRecipes();
         setRecipes(savedRecipes);
+
+        const editingId = readEditingRecipeId();
+        const editingRecipe = editingId
+          ? savedRecipes.find((recipe) => String(recipe.id) === editingId)
+          : null;
+
+        if (editingRecipe) {
+          setEditingRecipe(editingRecipe);
+        } else if (editingId) {
+          clearEditingRecipeId();
+        }
       } catch (error) {
         console.error('Error loading recipes:', error);
       } finally {
@@ -47,16 +77,20 @@ function Edit() {
 
       await saveRecipe(recipe);
       setRecipes((prev) => [...prev, recipe]);
-      showToast(`"${recipe.title}" added`, {
+      showToast(`"${recipe.title ?? recipe.name ?? 'Recipe'}" added`, {
         id: 'recipe-add',
         type: 'success',
       });
+
+      return true;
     } catch (error) {
       console.error('Error adding recipe:', error);
       showToast('Could not add recipe', {
         id: 'recipe-add-error',
         type: 'error',
       });
+
+      return false;
     }
   };
 
@@ -67,8 +101,16 @@ function Edit() {
     try {
       await deleteRecipeFromDB(id);
       setRecipes((prev) => prev.filter((recipe) => recipe.id !== id));
+
+      if (editingRecipe && String(editingRecipe.id) === String(id)) {
+        setEditingRecipe(null);
+        clearEditingRecipeId();
+      }
+
       showToast(
-        deletedRecipe ? `"${deletedRecipe.title}" deleted` : 'Recipe deleted',
+        deletedRecipe
+          ? `"${deletedRecipe.title ?? deletedRecipe.name ?? 'Recipe'}" deleted`
+          : 'Recipe deleted',
         { id: 'recipe-delete', type: 'success' }
       );
     } catch (error) {
@@ -83,6 +125,12 @@ function Edit() {
   // Select recipe for editing
   const editRecipe = (recipe) => {
     setEditingRecipe(recipe);
+    writeEditingRecipeId(recipe.id);
+  };
+
+  const cancelEdit = () => {
+    setEditingRecipe(null);
+    clearEditingRecipeId();
   };
 
   // Update recipe
@@ -97,30 +145,49 @@ function Edit() {
       );
 
       setEditingRecipe(null);
-      showToast(`"${updatedRecipe.title}" updated`, {
-        id: 'recipe-update',
-        type: 'success',
-      });
+      clearEditingRecipeId();
+      showToast(
+        `"${updatedRecipe.title ?? updatedRecipe.name ?? 'Recipe'}" updated`,
+        {
+          id: 'recipe-update',
+          type: 'success',
+        }
+      );
+
+      return true;
     } catch (error) {
       console.error('Error updating recipe:', error);
       showToast('Could not update recipe', {
         id: 'recipe-update-error',
         type: 'error',
       });
+
+      return false;
     }
   };
 
-  const ingredients = [
-    ...new Set(recipes.flatMap((recipe) => recipe.ingredients || [])),
-  ];
+  const seenIngredients = new Set();
+  const ingredients = [];
+
+  recipes.forEach((recipe) => {
+    (recipe.ingredients ?? []).forEach((item) => {
+      const id = ingredientKey(item);
+
+      if (!id || seenIngredients.has(id)) return;
+
+      seenIngredients.add(id);
+      ingredients.push({ value: id, label: ingredientLabel(item) });
+    });
+  });
 
   const filteredRecipes = recipes.filter((recipe) => {
-    const search = searchTerm.toLowerCase();
+    const search = searchTerm.trim().toLowerCase();
+    const title = recipe.title ?? recipe.name ?? '';
 
-    const matchesTitle = recipe.title.toLowerCase().includes(search);
+    const matchesTitle = title.toLowerCase().includes(search);
 
-    const matchesIngredients = (recipe.ingredients || []).some((ingredient) =>
-      ingredient.toLowerCase().includes(search)
+    const matchesIngredients = (recipe.ingredients ?? []).some((item) =>
+      ingredientLabel(item).toLowerCase().includes(search)
     );
 
     const matchesCategory =
@@ -128,7 +195,9 @@ function Edit() {
 
     const matchesIngredient =
       selectedIngredient === 'All' ||
-      (recipe.ingredients || []).includes(selectedIngredient);
+      (recipe.ingredients ?? []).some(
+        (item) => ingredientKey(item) === selectedIngredient
+      );
 
     return (
       (matchesTitle || matchesIngredients) &&
@@ -167,7 +236,7 @@ function Edit() {
         onAddRecipe={addRecipe}
         editingRecipe={editingRecipe}
         onUpdateRecipe={updateRecipe}
-        onCancelEdit={() => setEditingRecipe(null)}
+        onCancelEdit={cancelEdit}
       />
 
       {filteredRecipes.length === 0 ? (
