@@ -56,3 +56,37 @@
 .recipeLibraryCardActions > *:hover {
   background-color: #535bf2;
 }
+
+.recipeLibraryCardActions > .favoriteButton {
+  color: #e7d3b5;
+  background-color: #2f2f2f;
+  border: 1px solid #6b5a45;
+}
+
+.recipeLibraryCardActions > .favoriteButton:hover {
+  background-color: #3b3b3b;
+}
+
+.recipeLibraryCardActions > .favoriteButton.is-favorite {
+  color: #3a2a12;
+  background-color: #f6e2b8;
+  border-color: #c8962f;
+}
+
+.recipeLibraryCardActions > .favoriteButton.is-favorite:hover {
+  background-color: #ffeccb;
+}
+
+.recipeLibraryImages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em;
+  margin-bottom: clamp(0.5em, 1.5cqw, 0.75em);
+}
+
+.recipeLibraryImage {
+  max-width: 100%;
+  max-height: 9em;
+  object-fit: cover;
+  border-radius: 0.5em;
+}
