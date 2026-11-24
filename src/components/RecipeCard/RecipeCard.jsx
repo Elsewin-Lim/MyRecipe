@@ -9,9 +9,9 @@ function RecipeCard({ recipe, onDeleteRecipe, onEditRecipe }) {
 
   return (
     <div className="recipe-card">
-      <h2>{recipe.title}</h2>
+      <h2>{recipe.title ?? recipe.name}</h2>
       <p>Category: {recipe.category}</p>
-      <p>Cooking Time: {recipe.cookingTime}</p>
+      {recipe.cookingTime > 0 && <p>Cooking Time: {recipe.cookingTime} min</p>}
 
       <div className="recipe-card-actions">
         <button type="button" onClick={() => onEditRecipe(recipe)}>
@@ -28,7 +28,7 @@ function RecipeCard({ recipe, onDeleteRecipe, onEditRecipe }) {
         <ConfirmDialog
           open={Dialog}
           title="Delete Recipe?"
-          message={`Are you sure you want to delete "${recipe.title}"?`}
+          message={`Are you sure you want to delete "${recipe.title ?? recipe.name ?? 'this recipe'}"?`}
           confirmLabel="Delete"
           cancelLabel="Keep Recipe"
           danger
