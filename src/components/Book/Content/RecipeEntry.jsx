@@ -1,61 +1,123 @@
 import FavoriteButton from '../../FavoriteButton/FavoriteButton';
+import RecipeImageCarousel from '../../RecipeImageCarousel/RecipeImageCarousel';
+import {
+  formatSeconds,
+  instructionText,
+  totalInstructionSeconds,
+} from '../../../data/recipeModel';
 
 export default function RecipeEntry({ recipe, index, ingredientById }) {
   const title = recipe.title ?? recipe.name ?? 'Untitled recipe';
-  const meta = [
-    recipe.category ?? recipe.cuisine,
-    recipe.cookingTime != null ? `${recipe.cookingTime} min` : null,
-    recipe.servings != null ? `${recipe.servings} servings` : null,
-  ].filter(Boolean);
+  const category = recipe.category ?? recipe.cuisine ?? '';
+  const totalSeconds = totalInstructionSeconds(recipe.instructions);
+  const totalTime =
+    totalSeconds > 0
+      ? formatSeconds(totalSeconds)
+      : recipe.cookingTime > 0
+        ? `${recipe.cookingTime} min`
+        : '';
   const isFavorite = Boolean(recipe.favorite);
-  const instructions = (recipe.instructions ?? []).filter(Boolean);
+  const instructions = (recipe.instructions ?? [])
+    .map((step) => instructionText(step))
+    .filter(Boolean);
   const images = (recipe.images ?? []).filter(Boolean);
+  const ingredients = (recipe.ingredients ?? []).map((item, itemIndex) => {
+    if (typeof item === 'string') {
+      return {
+        key: `${item}-${itemIndex}`,
+        name: item,
+        quantity: '',
+        unit: '',
+      };
+    }
+
+    const ingredient = ingredientById.get(item.id);
+
+    return {
+      key: `${item.id}-${itemIndex}`,
+      name: item.name ?? ingredient?.name ?? item.id,
+      quantity: item.quantity ?? '',
+      unit: item.unit ?? ingredient?.unit ?? '',
+    };
+  });
 
   return (
     <article className={`recipe-entry${index === 0 ? ' first' : ''}`}>
       <div className="recipe-entry-header">
-        <h1>{title}</h1>
         <FavoriteButton
-          className="recipe-favorite"
+          className="recipe-entry-action recipe-favorite"
           isFavorite={isFavorite}
           recipeTitle={title}
           data-favorite-id={recipe.id}
         />
+        <button
+          type="button"
+          className="recipe-entry-action recipe-entry-action--cook"
+          data-recipe-action="cook"
+          data-recipe-id={recipe.id}
+        >
+          Cook
+        </button>
+        <button
+          type="button"
+          className="recipe-entry-action recipe-entry-action--edit"
+          data-recipe-action="edit"
+          data-recipe-id={recipe.id}
+        >
+          Edit
+        </button>
+        <button
+          type="button"
+          className="recipe-entry-action recipe-entry-action-danger"
+          data-recipe-action="delete"
+          data-recipe-id={recipe.id}
+        >
+          Delete
+        </button>
       </div>
-      {meta.length > 0 && <p className="recipe-meta">{meta.join(' · ')}</p>}
+
+      <div className="recipe-entry-title-row">
+        <h1>{title}</h1>
+        {category && (
+          <span className="recipe-entry-badge recipe-entry-badge--category">
+            {category}
+          </span>
+        )}
+        {totalTime && (
+          <span className="recipe-entry-badge recipe-entry-badge--time">
+            {totalTime}
+          </span>
+        )}
+      </div>
 
       {images.length > 0 && (
-        <div className="recipe-images">
-          {images.map((src, imageIndex) => (
-            <img
-              key={`${imageIndex}-${src.slice(0, 24)}`}
-              className="recipe-image"
-              src={src}
-              alt={`${title} — ${imageIndex + 1}`}
-              loading="lazy"
-            />
-          ))}
-        </div>
+        <RecipeImageCarousel images={images} title={title} variant="book" />
       )}
 
       <h2>Ingredients</h2>
-      <ul className="recipe-ingredients">
-        {(recipe.ingredients ?? []).map((item, itemIndex) => {
-          if (typeof item === 'string') {
-            return <li key={`${item}-${itemIndex}`}>{item}</li>;
-          }
 
-          const ingredient = ingredientById.get(item.id);
-
-          return (
-            <li key={`${item.id}-${itemIndex}`}>
-              {ingredient
-                ? `${ingredient.name} — ${item.quantity} ${ingredient.unit}`
-                : `${item.id} — ${item.quantity}`}
-            </li>
-          );
-        })}
-      </ul>
+      {ingredients.length > 0 ? (
+        <table className="recipe-ingredients-table">
+          <thead>
+            <tr>
+              <th scope="col">Ingredient</th>
+              <th scope="col">Qty</th>
+              <th scope="col">Unit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ingredients.map((ingredient) => (
+              <tr key={ingredient.key}>
+                <td>{ingredient.name}</td>
+                <td>{ingredient.quantity}</td>
+                <td>{ingredient.unit}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p className="recipe-empty">No ingredients listed.</p>
+      )}
 
       {instructions.length > 0 && (
         <>

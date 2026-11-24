@@ -1,12 +1,21 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router';
 import Intro from '../../components/Intro/Intro';
 import Book from '../../components/Book/Book';
 import { DEFAULT_BOOK_PAGE_KEY } from '../../components/Book/bookPageStorage';
 import RecipeEntry from '../../components/Book/Content/RecipeEntry';
+import ConfirmDialog from '../../components/Dialog/ConfirmDialog';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import { ingredientLibrary } from '../../data/recipe';
-import { getAllRecipes, setRecipeFavorite } from '../../data/recipeDatabase';
+import {
+  deleteRecipe as deleteRecipeFromDB,
+  getAllRecipes,
+  setRecipeFavorite,
+} from '../../data/recipeDatabase';
+import { startCookingSession } from '../../data/cookingSession';
+import { writeEditingRecipeId } from '../../data/editingSession';
 import { useStore } from '../../context/useStore';
+import { useTimer } from '../../context/timerContext';
 import './MyRecipe.css';
 
 const ingredientById = new Map(
@@ -42,6 +51,9 @@ function Home() {
   const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
+  const [pendingDelete, setPendingDelete] = useState(null);
+  const navigate = useNavigate();
+  const { clearTimer } = useTimer();
   const { showToast } = useStore();
 
   useEffect(() => {
@@ -91,6 +103,7 @@ function Home() {
             filteredRecipes.map((recipe) => [
               recipe.id,
               recipe.title ?? recipe.name,
+              recipe.category ?? recipe.cuisine ?? null,
               recipe.cookingTime ?? null,
               recipe.ingredients ?? [],
               recipe.instructions ?? [],
@@ -105,10 +118,36 @@ function Home() {
   );
 
   const handleBookClick = async (event) => {
-    const button =
-      event.target instanceof Element
-        ? event.target.closest('[data-favorite-id]')
-        : null;
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target) return;
+
+    const actionButton = target.closest('[data-recipe-action]');
+
+    if (actionButton) {
+      const action = actionButton.getAttribute('data-recipe-action');
+      const id = actionButton.getAttribute('data-recipe-id');
+      const recipe = recipes.find((item) => String(item.id) === id);
+
+      if (action === 'cook' && id) {
+        clearTimer();
+        startCookingSession(id);
+        navigate('/TODO');
+        return;
+      }
+
+      if (action === 'edit' && id) {
+        writeEditingRecipeId(id);
+        navigate('/Edit');
+        return;
+      }
+
+      if (action === 'delete' && recipe) {
+        setPendingDelete(recipe);
+        return;
+      }
+    }
+
+    const button = target.closest('[data-favorite-id]');
     if (!button) return;
 
     const id = button.getAttribute('data-favorite-id');
@@ -148,6 +187,31 @@ function Home() {
     }
   };
 
+  async function handleConfirmDelete() {
+    if (!pendingDelete) return;
+
+    const id = pendingDelete.id;
+    const title = pendingDelete.title ?? pendingDelete.name ?? 'Recipe';
+
+    try {
+      await deleteRecipeFromDB(id);
+      setRecipes((previous) =>
+        previous.filter((item) => String(item.id) !== String(id))
+      );
+      setPendingDelete(null);
+      showToast(`"${title}" deleted`, {
+        id: 'recipe-delete',
+        type: 'success',
+      });
+    } catch (error) {
+      console.error('Error deleting recipe:', error);
+      showToast('Could not delete recipe', {
+        id: 'recipe-delete-error',
+        type: 'error',
+      });
+    }
+  }
+
   return (
     <div className="landingPage">
       <div className="bookArea">
@@ -172,6 +236,17 @@ function Home() {
           </Book>
         </div>
       </div>
+
+      <ConfirmDialog
+        open={Boolean(pendingDelete)}
+        title="Delete Recipe?"
+        message={`Are you sure you want to delete "${pendingDelete?.title ?? pendingDelete?.name ?? 'this recipe'}"?`}
+        confirmLabel="Delete"
+        cancelLabel="Keep Recipe"
+        danger
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setPendingDelete(null)}
+      />
     </div>
   );
 }
