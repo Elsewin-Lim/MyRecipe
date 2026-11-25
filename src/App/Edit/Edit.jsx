@@ -4,9 +4,11 @@ import SearchBar from '../../components/SearchBar/SearchBar';
 import CategoryFilter from '../../components/CategoryFilter/CategoryFilter';
 import IngredientFilter from '../../components/IngredientFilter/IngredientFilter';
 import RecipeForm from '../../components/RecipeForm/RecipeForm';
+import { useStore } from '../../context/useStore';
 import './Edit.css';
 
 function Edit() {
+  const { showToast } = useStore();
   const [recipes, setRecipes] = useState([
     {
       id: 1,
@@ -38,6 +40,7 @@ function Edit() {
 
   const addRecipe = (newRecipe) => {
     setRecipes((prevRecipes) => [...prevRecipes, newRecipe]);
+    showToast(`Recipe "${newRecipe.title}" added.`, { type: 'success' });
   };
 
   const deleteRecipe = (id) => {
@@ -48,6 +51,12 @@ function Edit() {
 
   const editRecipe = (recipe) => {
     setEditingRecipe(recipe);
+    showToast(`Editing "${recipe.title}".`, { type: 'info' });
+  };
+
+  const cancelEdit = () => {
+    setEditingRecipe(null);
+    showToast('Edit canceled.', { type: 'info' });
   };
 
   const updateRecipe = (updatedRecipe) => {
@@ -58,6 +67,9 @@ function Edit() {
     );
 
     setEditingRecipe(null);
+    showToast(`Recipe "${updatedRecipe.title}" updated.`, {
+      type: 'success',
+    });
   };
 
   const ingredients = [
@@ -109,7 +121,7 @@ function Edit() {
         onAddRecipe={addRecipe}
         editingRecipe={editingRecipe}
         onUpdateRecipe={updateRecipe}
-        onCancelEdit={() => setEditingRecipe(null)}
+        onCancelEdit={cancelEdit}
       />
 
       <RecipeList

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useStore } from '../../context/useStore';
 
 function RecipeForm({
   onAddRecipe,
@@ -6,6 +7,7 @@ function RecipeForm({
   onUpdateRecipe,
   onCancelEdit,
 }) {
+  const { showToast } = useStore();
   const isEditing = Boolean(editingRecipe);
 
   const [title, setTitle] = useState(editingRecipe?.title ?? '');
@@ -23,6 +25,10 @@ function RecipeForm({
     e.preventDefault();
 
     if (!title.trim() || !cookingTime || !ingredients.trim()) {
+      showToast(
+        'Fill in the title, cooking time, and at least one ingredient.',
+        { type: 'error' }
+      );
       return;
     }
 
