@@ -1,19 +1,35 @@
-# React + Vite
+# MyRecipe
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A browser-only recipe book built with React, Vite, paged.js, and react-pageflip-enhanced. Browse recipes as a page-flip book, cook step by step with a timer, save favorites, and build a shopping list. All data stays in the browser.
 
-Currently, two official plugins are available:
+## Getting started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Requires Node.js 20+.
 
-## React Compiler
+```bash
+npm install
+npm run dev
+```
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- `npm run build` — production build (base `/MyRecipe/`)
+- `npm run lint` — ESLint
+- `npm run check` — Prettier write
 
-Note: This will impact Vite dev & build performances.
-You can also try [the experimental native React Compiler support in plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md#rust-react-compiler) by using `compiler: true` in the plugin options instead of using the Babel plugin.
+Lefthook formats and lints staged files on commit and push.
 
-## Expanding the ESLint configuration
+## Project layout
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```text
+src/
+  App/          route pages
+  components/   shared UI
+  context/      app, recipe, and timer providers
+  data/         recipe data, IndexedDB access, storage helpers
+  router/       file-based routes
+  utils/        shared utilities
+DB/IndexDB.js   IndexedDB wrapper
+```
+
+- Pages are auto-registered by `src/router/routes.config.jsx`: `src/App/MyRecipe/MyRecipe.jsx` becomes `/MyRecipe`.
+- Recipes live in IndexedDB (`data/recipeDatabase.js`). Drafts, book position, shopping list, and cooking sessions use the helpers in `data/` and `localStorage`/`sessionStorage`.
+- The book is paginated with paged.js and then rendered with `react-pageflip-enhanced`.

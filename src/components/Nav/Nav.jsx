@@ -1,18 +1,15 @@
 import { Link } from 'react-router';
-import { routeList } from '../../router/routes.config';
+import { navLinks } from '../../config/nav';
 import './Nav.css';
 
 function Nav() {
   return (
-    <nav className="HomeNav">
-      {routeList.map((PageRoute) => {
-        const cleanPath = PageRoute.path.slice(1);
-        return (
-          <Link key={PageRoute.path} to={PageRoute.path}>
-            {cleanPath}
-          </Link>
-        );
-      })}
+    <nav className="HomeNav" aria-label="Main navigation">
+      {navLinks.map(({ path, label }) => (
+        <Link key={path} to={path}>
+          {label}
+        </Link>
+      ))}
     </nav>
   );
 }

@@ -1,4 +1,6 @@
 import { Navigate } from 'react-router';
+import { navLinks } from '../config/nav';
+import { reorderBy } from '../utils/reorderBy';
 
 const pages = import.meta.glob('../App/**/*.jsx', { eager: true });
 
@@ -27,6 +29,10 @@ export const routeList = Object.keys(pages)
 
 export const customRoutes = [
   { path: '/', element: <Navigate to="/MyRecipe" replace /> },
-  ...routeList,
+  ...reorderBy(
+    routeList,
+    navLinks.map((link) => link.path),
+    (route) => route.path
+  ),
   { path: '*', element: <div>Page Not Found</div> },
 ];
