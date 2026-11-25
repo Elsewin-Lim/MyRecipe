@@ -1,0 +1,135 @@
+.BackCover {
+  position: relative;
+  overflow: hidden;
+  container-type: inline-size;
+}
+
+.BackCover::after {
+  position: absolute;
+  inset: 12px;
+  z-index: 2;
+  pointer-events: none;
+  content: '';
+  border: 1px solid rgb(255 255 255 / 24%);
+  border-radius: 2px;
+}
+
+.BackCover__content {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: max(24px, 36cqw) max(14px, 6.8cqw) max(14px, 6.2cqw);
+  color: #fff;
+  text-align: center;
+  background: linear-gradient(
+    to bottom,
+    rgb(35 38 16 / 0%) 0%,
+    rgb(35 38 16 / 0%) 24%,
+    rgb(35 38 16 / 32%) 34%,
+    rgb(35 38 16 / 58%) 100%
+  );
+}
+
+.BackCover__summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: max(5px, 2.6cqw);
+  max-width: 100%;
+}
+
+.BackCover__blurb {
+  max-width: max(150px, 66cqw);
+  margin: 0;
+  font-size: max(6px, 2.86cqw);
+  line-height: 1.6;
+  color: #f8f5e7;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 22%);
+}
+
+.BackCover__rule {
+  width: max(24px, 9.7cqw);
+  height: 1px;
+  background: rgb(255 255 255 / 52%);
+}
+
+.BackCover__label {
+  margin: 0;
+  font-size: max(5px, 2.3cqw);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 78%);
+}
+
+.BackCover__contributors {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: max(24px, 13.7cqw);
+  max-width: 100%;
+  padding: 0;
+  line-height: 0;
+  filter: drop-shadow(0 2px 3px rgb(0 0 0 / 20%));
+}
+
+.BackCover__contributors img {
+  display: block;
+  max-width: 100%;
+  max-height: max(24px, 13.7cqw);
+  height: auto;
+}
+
+.BackCover__contributors:focus-visible,
+.BackCover__repo:focus-visible {
+  outline: 2px solid #f8f5e7;
+  outline-offset: 3px;
+}
+
+.BackCover__footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: max(4px, 2.3cqw);
+  margin-top: auto;
+}
+
+.BackCover__repo {
+  font-size: max(6px, 2.6cqw);
+  color: #f8f5e7;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  opacity: 0.92;
+  transition: opacity 150ms ease;
+}
+
+.BackCover__repo:hover {
+  opacity: 1;
+}
+
+.BackCover__colophon {
+  display: flex;
+  align-items: center;
+  gap: max(4px, 2.3cqw);
+}
+
+.BackCover__barcode {
+  width: max(28px, 14.8cqw);
+  height: max(9px, 4.6cqw);
+  background-image:
+    repeating-linear-gradient(90deg, #f4efdc 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, #f4efdc 0 2px, transparent 2px 7px);
+  background-size:
+    11px 100%,
+    17px 100%;
+  opacity: 0.72;
+}
+
+.BackCover__edition {
+  font-size: max(4px, 2cqw);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 65%);
+}
