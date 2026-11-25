@@ -1,17 +1,10 @@
-import { useNavigate } from 'react-router';
-import { startCookingSession } from '../../data/cookingSession';
-import { useTimer } from '../../context/timerContext';
+import { useStartCooking } from '../../hooks/useStartCooking';
 
-function CookButton({ recipeId, className, children, ...rest }) {
-  const navigate = useNavigate();
-  const { clearTimer } = useTimer();
+function CookButton({ recipeId, className = '', children = 'Cook', ...rest }) {
+  const startCooking = useStartCooking();
 
   function handleClick() {
-    if (recipeId == null) return;
-
-    clearTimer();
-    startCookingSession(recipeId);
-    navigate('/TODO');
+    startCooking(recipeId);
   }
 
   return (

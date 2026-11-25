@@ -24,7 +24,7 @@
 .recipe-entry-title-row {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   gap: 8px;
   margin: 0 0 10px;
   break-after: avoid;
@@ -199,20 +199,39 @@
   background: #efe3d3;
 }
 
-.recipe-entry-action.recipe-favorite {
-  color: #8a5a00;
-  background: #fdf5e3;
-  border-color: #d6b26a;
+.recipe-favorite-star {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 1.5em;
+  height: 1.5em;
+  padding: 0;
+  font: inherit;
+  font-size: 18px;
+  line-height: 1;
+  color: #b08a5d;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  transition:
+    color 150ms ease,
+    background-color 150ms ease;
 }
 
-.recipe-entry-action.recipe-favorite:hover {
+.recipe-favorite-star:hover {
+  color: #c8962f;
   background: #f8e9c4;
 }
 
-.recipe-entry-action.recipe-favorite.is-favorite {
-  color: #7a4a00;
-  background: #ffe6a8;
-  border-color: #c8962f;
+.recipe-favorite-star.is-favorite {
+  color: #c8962f;
+}
+
+.recipe-favorite-star:focus-visible {
+  outline: 2px solid #c8962f;
+  outline-offset: 2px;
 }
 
 .recipe-entry-action--cook {
@@ -223,6 +242,16 @@
 
 .recipe-entry-action--cook:hover {
   background: #d7efe3;
+}
+
+.recipe-entry-action--shopping {
+  color: #7b4d86;
+  background: #f6ecf7;
+  border-color: #d4b3dc;
+}
+
+.recipe-entry-action--shopping:hover {
+  background: #eeddf0;
 }
 
 .recipe-entry-action--edit {

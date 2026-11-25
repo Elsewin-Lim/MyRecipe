@@ -1,4 +1,5 @@
 import { ingredientLibrary } from '../../data/recipe';
+import AddToShoppingListButton from '../AddToShoppingListButton/AddToShoppingListButton';
 import FavoriteButton from '../FavoriteButton/FavoriteButton';
 import CookButton from '../CookButton/CookButton';
 import RecipeImageCarousel from '../RecipeImageCarousel/RecipeImageCarousel';
@@ -59,9 +60,9 @@ function RecipeLibraryCard({ recipe, onAddIngredients, onToggleFavorite }) {
         )}
 
         {onAddIngredients && (
-          <button type="button" onClick={() => onAddIngredients(recipe)}>
-            Add to shopping List
-          </button>
+          <AddToShoppingListButton onClick={() => onAddIngredients(recipe)}>
+            Add to shopping list
+          </AddToShoppingListButton>
         )}
       </div>
     </article>

@@ -3,6 +3,7 @@ function FavoriteButton({
   onToggle,
   recipeTitle,
   className = '',
+  children,
   ...rest
 }) {
   const classes = [className, isFavorite ? 'is-favorite' : '']
@@ -15,6 +16,7 @@ function FavoriteButton({
       type="button"
       className={classes}
       aria-pressed={isFavorite}
+      data-favorite-title={recipeTitle}
       aria-label={
         recipeTitle
           ? isFavorite
@@ -24,7 +26,7 @@ function FavoriteButton({
       }
       onClick={onToggle}
     >
-      {isFavorite ? '★ Favorited' : '☆ Favorite'}
+      {children ?? (isFavorite ? '★ Favorited' : '☆ Favorite')}
     </button>
   );
 }
