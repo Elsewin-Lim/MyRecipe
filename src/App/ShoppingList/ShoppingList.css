@@ -18,7 +18,7 @@
   flex-direction: column;
   gap: clamp(0.35em, 1cqw, 0.55em);
   width: 100%;
-  max-width: min(100%, 22em);
+  max-width: min(100%, 34em);
   margin: clamp(0.75em, 2cqw, 1.25em) 0 clamp(1.25em, 3cqw, 1.6em);
 }
 
@@ -35,6 +35,61 @@
 
 .shoppingListPage form select,
 .shoppingListPage form input {
+  width: 100%;
+  padding: clamp(0.5em, 1cqw, 0.7em);
+  font: inherit;
+  color: var(--text-h);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0.5em;
+}
+
+.shoppingAddRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  align-items: flex-end;
+}
+
+.shoppingAddField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  min-width: 0;
+}
+
+.shoppingAddField label {
+  font-size: 0.8em;
+}
+
+.shoppingAddIngredient {
+  flex: 2 1 12em;
+}
+
+.shoppingAddQuantity {
+  flex: 0 1 6em;
+}
+
+.shoppingAddUnit {
+  flex: 0 1 6em;
+}
+
+.shoppingListFilter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  width: 100%;
+  max-width: min(100%, 22em);
+  margin-bottom: clamp(0.75em, 2cqw, 1.25em);
+}
+
+.shoppingListFilter label {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.shoppingListFilter select {
   width: 100%;
   padding: clamp(0.5em, 1cqw, 0.7em);
   font: inherit;

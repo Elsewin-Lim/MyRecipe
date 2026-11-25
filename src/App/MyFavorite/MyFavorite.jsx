@@ -9,7 +9,14 @@ import './MyFavorite.css';
 function toShoppingIngredients(ingredients) {
   return ingredients.flatMap((item) => {
     if (typeof item !== 'string') {
-      return [{ id: item.id, quantity: Number(item.quantity) || 1 }];
+      return [
+        {
+          id: item.id,
+          name: item.name,
+          unit: item.unit,
+          quantity: Number(item.quantity) || 1,
+        },
+      ];
     }
 
     const key = item.trim().toLowerCase();

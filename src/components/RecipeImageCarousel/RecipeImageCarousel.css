@@ -1,0 +1,102 @@
+.recipeImageCarousel {
+  --recipe-carousel-height: 9em;
+
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  margin: 0 0 clamp(0.5em, 1.5cqw, 0.75em);
+  break-inside: avoid;
+}
+
+.recipeImageCarousel--book {
+  --recipe-carousel-height: 120px;
+
+  margin: 8px 0 12px;
+}
+
+.recipeImageCarousel--book .recipeImageCarouselImage {
+  width: 100%;
+  height: var(--recipe-carousel-height);
+  box-shadow: 0 1px 4px rgb(74 47 27 / 14%);
+}
+
+.recipeImageCarousel--book.recipeImageCarousel--static
+  .recipeImageCarouselImage {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.recipeImageCarousel--static {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.recipeImageCarousel--static .recipeImageCarouselImage {
+  flex: 1 1 7em;
+  min-width: 0;
+}
+
+.recipeImageCarouselTrack {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  border-radius: 0.5em;
+}
+
+.recipeImageCarouselTrack::-webkit-scrollbar {
+  display: none;
+}
+
+.recipeImageCarouselSlide {
+  display: flex;
+  flex: 0 0 100%;
+  justify-content: center;
+  scroll-snap-align: start;
+}
+
+.recipeImageCarouselImage {
+  max-width: 100%;
+  max-height: var(--recipe-carousel-height);
+  object-fit: cover;
+  border-radius: 0.5em;
+}
+
+.recipeImageCarousel--book .recipeImageCarouselImage {
+  border-radius: 4px;
+}
+
+.recipeImageCarouselButton {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2em;
+  height: 2em;
+  padding: 0;
+  font: inherit;
+  font-size: 1.1em;
+  line-height: 1;
+  color: white;
+  cursor: pointer;
+  background: rgb(0 0 0 / 55%);
+  border: 0;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  transition: background-color 150ms ease;
+}
+
+.recipeImageCarouselButton:hover {
+  background: rgb(0 0 0 / 75%);
+}
+
+.recipeImageCarouselButton--prev {
+  left: 0.35em;
+}
+
+.recipeImageCarouselButton--next {
+  right: 0.35em;
+}
