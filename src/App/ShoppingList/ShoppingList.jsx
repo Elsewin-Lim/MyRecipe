@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { ingredientLibrary } from '../../data/recipe';
+import { INGREDIENT_OPTIONS, UNIT_OPTIONS } from '../../data/ingredientOptions';
+import ComboBox from '../../components/ComboBox/ComboBox';
 import { useRecipe } from '../../context/recipeContext';
 import { useStore } from '../../context/useStore';
 import './ShoppingList.css';
@@ -16,8 +18,10 @@ function ShoppingList() {
   } = useRecipe();
   const { showToast } = useStore();
 
-  const [selectedIngredient, setSelectedIngredient] = useState('rice');
-  const [quantity, setQuantity] = useState(1);
+  const [selectedIngredient, setSelectedIngredient] = useState('');
+  const [customIngredientName, setCustomIngredientName] = useState('');
+  const [quantity, setQuantity] = useState('1');
+  const [unit, setUnit] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const categories = [
@@ -25,11 +29,17 @@ function ShoppingList() {
     ...new Set(ingredientLibrary.map((item) => item.category || 'Other')),
   ];
 
-  const filteredIngredients = ingredientLibrary.filter(
-    (ingredient) =>
-      selectedCategory === 'All' ||
-      (ingredient.category || 'Other') === selectedCategory
+  const selectedLibraryItem = ingredientLibrary.find(
+    (item) => item.id === selectedIngredient
   );
+
+  const ingredientOptions =
+    selectedIngredient && !selectedLibraryItem && customIngredientName
+      ? [
+          ...INGREDIENT_OPTIONS,
+          { value: selectedIngredient, label: customIngredientName },
+        ]
+      : INGREDIENT_OPTIONS;
 
   const visibleItems = shoppingList.filter((item) => {
     const ingredient = ingredientLibrary.find((i) => i.id === item.id);
@@ -39,10 +49,32 @@ function ShoppingList() {
     return selectedCategory === 'All' || category === selectedCategory;
   });
 
+  function handleIngredientChange(nextValue) {
+    const ingredient = ingredientLibrary.find((item) => item.id === nextValue);
+
+    setSelectedIngredient(nextValue);
+    setCustomIngredientName('');
+    setUnit(ingredient?.unit ?? '');
+  }
+
+  function handleCreateCustomIngredient(label) {
+    setSelectedIngredient(`custom:${crypto.randomUUID()}`);
+    setCustomIngredientName(label);
+  }
+
   function handleAddIngredient(event) {
     event.preventDefault();
 
     const amount = Number(quantity);
+    const name = selectedLibraryItem?.name ?? customIngredientName.trim();
+
+    if (!name) {
+      showToast('Choose or type an ingredient', {
+        id: 'shopping-add-empty',
+        type: 'warning',
+      });
+      return;
+    }
 
     if (!Number.isFinite(amount) || amount <= 0) {
       showToast('Enter a quantity greater than zero', {
@@ -55,20 +87,21 @@ function ShoppingList() {
     addIngredients([
       {
         id: selectedIngredient,
+        name: selectedLibraryItem ? undefined : name,
+        unit: unit.trim(),
         quantity: amount,
       },
     ]);
 
-    const ingredient = ingredientLibrary.find(
-      (item) => item.id === selectedIngredient
-    );
-
-    showToast(`${ingredient?.name ?? 'Ingredient'} added to shopping list`, {
+    showToast(`${name} added to shopping list`, {
       id: 'shopping-add',
       type: 'success',
     });
 
-    setQuantity(1);
+    setSelectedIngredient('');
+    setCustomIngredientName('');
+    setQuantity('1');
+    setUnit('');
   }
 
   function handleRemoveIngredient(item) {
@@ -104,23 +137,60 @@ function ShoppingList() {
       <form onSubmit={handleAddIngredient}>
         <h2>Add Ingredient</h2>
 
-        <label htmlFor="category">Filter by Category</label>
+        <div className="shoppingAddRow">
+          <div className="shoppingAddField shoppingAddIngredient">
+            <label htmlFor="shopping-ingredient">Ingredient</label>
+
+            <ComboBox
+              id="shopping-ingredient"
+              options={ingredientOptions}
+              value={selectedIngredient}
+              onChange={handleIngredientChange}
+              onCreateCustom={handleCreateCustomIngredient}
+              allowCustom
+              placeholder="Type to search or add a custom ingredient"
+            />
+          </div>
+
+          <div className="shoppingAddField shoppingAddQuantity">
+            <label htmlFor="shopping-quantity">Quantity</label>
+
+            <input
+              id="shopping-quantity"
+              type="number"
+              min="0"
+              step="any"
+              value={quantity}
+              onFocus={(e) => e.target.select()}
+              onChange={(event) => setQuantity(event.target.value)}
+            />
+          </div>
+
+          <div className="shoppingAddField shoppingAddUnit">
+            <label htmlFor="shopping-unit">Unit</label>
+
+            <ComboBox
+              id="shopping-unit"
+              options={UNIT_OPTIONS}
+              value={unit}
+              onChange={setUnit}
+              onQueryChange={setUnit}
+              allowCustom
+              placeholder="Unit"
+            />
+          </div>
+        </div>
+
+        <button type="submit">+ Add Ingredient</button>
+      </form>
+
+      <div className="shoppingListFilter">
+        <label htmlFor="shopping-category">Filter list by category</label>
 
         <select
-          id="category"
+          id="shopping-category"
           value={selectedCategory}
-          onChange={(event) => {
-            const category = event.target.value;
-
-            setSelectedCategory(category);
-
-            const firstIngredient = ingredientLibrary.find(
-              (item) =>
-                category === 'All' || (item.category || 'Other') === category
-            );
-
-            setSelectedIngredient(firstIngredient?.id || '');
-          }}
+          onChange={(event) => setSelectedCategory(event.target.value)}
         >
           {categories.map((category) => (
             <option key={category} value={category}>
@@ -128,35 +198,7 @@ function ShoppingList() {
             </option>
           ))}
         </select>
-
-        <label htmlFor="ingredient">Choose Ingredient:</label>
-
-        <select
-          id="ingredient"
-          value={selectedIngredient}
-          onChange={(event) => setSelectedIngredient(event.target.value)}
-        >
-          {filteredIngredients.map((ingredient) => (
-            <option key={ingredient.id} value={ingredient.id}>
-              {ingredient.name}
-            </option>
-          ))}
-        </select>
-
-        <label htmlFor="quantity">Quantity</label>
-
-        <input
-          id="quantity"
-          type="number"
-          min="1"
-          step="1"
-          value={quantity}
-          onChange={(event) => setQuantity(event.target.value)}
-          required
-        />
-
-        <button type="submit">+ Add Ingredient</button>
-      </form>
+      </div>
 
       {shoppingList.length === 0 ? (
         <p className="shoppingListEmpty">Your shopping list is empty.</p>
