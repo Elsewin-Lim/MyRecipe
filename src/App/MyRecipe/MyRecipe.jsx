@@ -12,10 +12,10 @@ import {
   getAllRecipes,
   setRecipeFavorite,
 } from '../../data/recipeDatabase';
-import { startCookingSession } from '../../data/cookingSession';
 import { writeEditingRecipeId } from '../../data/editingSession';
 import { useStore } from '../../context/useStore';
-import { useTimer } from '../../context/timerContext';
+import { useAddToShoppingList } from '../../hooks/useAddToShoppingList';
+import { useStartCooking } from '../../hooks/useStartCooking';
 import './MyRecipe.css';
 
 const ingredientById = new Map(
@@ -42,9 +42,20 @@ function matchesSearch(recipe, term) {
 }
 
 function applyFavoriteState(button, isFavorite) {
+  const title = button.getAttribute('data-favorite-title');
+
   button.classList.toggle('is-favorite', isFavorite);
   button.setAttribute('aria-pressed', String(isFavorite));
-  button.textContent = isFavorite ? '★ Favorited' : '☆ Favorite';
+  button.textContent = isFavorite ? '★' : '☆';
+
+  if (title) {
+    button.setAttribute(
+      'aria-label',
+      isFavorite
+        ? `Remove ${title} from favorites`
+        : `Add ${title} to favorites`
+    );
+  }
 }
 
 function Home() {
@@ -53,7 +64,8 @@ function Home() {
   const [loading, setLoading] = useState(true);
   const [pendingDelete, setPendingDelete] = useState(null);
   const navigate = useNavigate();
-  const { clearTimer } = useTimer();
+  const addRecipeToShoppingList = useAddToShoppingList();
+  const startCooking = useStartCooking();
   const { showToast } = useStore();
 
   useEffect(() => {
@@ -129,9 +141,12 @@ function Home() {
       const recipe = recipes.find((item) => String(item.id) === id);
 
       if (action === 'cook' && id) {
-        clearTimer();
-        startCookingSession(id);
-        navigate('/TODO');
+        startCooking(id);
+        return;
+      }
+
+      if (action === 'shopping' && recipe) {
+        addRecipeToShoppingList(recipe);
         return;
       }
 

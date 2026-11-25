@@ -1,3 +1,5 @@
+import AddToShoppingListButton from '../../AddToShoppingListButton/AddToShoppingListButton';
+import CookButton from '../../CookButton/CookButton';
 import FavoriteButton from '../../FavoriteButton/FavoriteButton';
 import RecipeImageCarousel from '../../RecipeImageCarousel/RecipeImageCarousel';
 import {
@@ -44,20 +46,18 @@ export default function RecipeEntry({ recipe, index, ingredientById }) {
   return (
     <article className={`recipe-entry${index === 0 ? ' first' : ''}`}>
       <div className="recipe-entry-header">
-        <FavoriteButton
-          className="recipe-entry-action recipe-favorite"
-          isFavorite={isFavorite}
-          recipeTitle={title}
-          data-favorite-id={recipe.id}
-        />
-        <button
-          type="button"
+        <CookButton
           className="recipe-entry-action recipe-entry-action--cook"
+          recipeId={recipe.id}
           data-recipe-action="cook"
           data-recipe-id={recipe.id}
-        >
-          Cook
-        </button>
+        />
+        <AddToShoppingListButton
+          className="recipe-entry-action recipe-entry-action--shopping"
+          data-recipe-action="shopping"
+          data-recipe-id={recipe.id}
+          aria-label="Add ingredients to shopping list"
+        />
         <button
           type="button"
           className="recipe-entry-action recipe-entry-action--edit"
@@ -77,6 +77,15 @@ export default function RecipeEntry({ recipe, index, ingredientById }) {
       </div>
 
       <div className="recipe-entry-title-row">
+        <FavoriteButton
+          className="recipe-favorite-star"
+          isFavorite={isFavorite}
+          recipeTitle={title}
+          data-favorite-id={recipe.id}
+          data-favorite-star
+        >
+          {isFavorite ? '★' : '☆'}
+        </FavoriteButton>
         <h1>{title}</h1>
         {category && (
           <span className="recipe-entry-badge recipe-entry-badge--category">

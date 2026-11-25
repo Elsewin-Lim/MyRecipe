@@ -1,38 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useRecipe } from '../../context/recipeContext';
 import { useStore } from '../../context/useStore';
-import { ingredientLibrary } from '../../data/recipe';
 import { getAllRecipes, setRecipeFavorite } from '../../data/recipeDatabase';
 import RecipeLibraryCard from '../../components/RecipeLibraryCard/RecipeLibraryCard';
+import { useAddToShoppingList } from '../../hooks/useAddToShoppingList';
 import './MyFavorite.css';
 
-function toShoppingIngredients(ingredients) {
-  return ingredients.flatMap((item) => {
-    if (typeof item !== 'string') {
-      return [
-        {
-          id: item.id,
-          name: item.name,
-          unit: item.unit,
-          quantity: Number(item.quantity) || 1,
-        },
-      ];
-    }
-
-    const key = item.trim().toLowerCase();
-    const match = ingredientLibrary.find(
-      (ingredient) =>
-        ingredient.id.toLowerCase() === key ||
-        ingredient.name.toLowerCase() === key
-    );
-
-    return match ? [{ id: match.id, quantity: 1 }] : [];
-  });
-}
-
 function MyFavorite() {
-  const { addIngredients } = useRecipe();
   const { showToast } = useStore();
+  const addRecipeToShoppingList = useAddToShoppingList();
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -99,25 +74,6 @@ function MyFavorite() {
     }
   };
 
-  const handleAddIngredients = (recipe) => {
-    const ingredients = toShoppingIngredients(recipe.ingredients ?? []);
-    const title = recipe.title ?? recipe.name ?? 'Recipe';
-
-    if (ingredients.length === 0) {
-      showToast(`No shopping-list ingredients found in "${title}"`, {
-        id: 'favorite-add-ingredients-empty',
-        type: 'warning',
-      });
-      return;
-    }
-
-    addIngredients(ingredients);
-    showToast(`"${title}" ingredients added to shopping list`, {
-      id: 'favorite-add-ingredients',
-      type: 'success',
-    });
-  };
-
   return (
     <div className="myFavoritePage">
       <h1>My Favorite Recipes</h1>
@@ -136,7 +92,7 @@ function MyFavorite() {
               key={recipe.id}
               recipe={recipe}
               onToggleFavorite={handleToggleFavorite}
-              onAddIngredients={handleAddIngredients}
+              onAddIngredients={addRecipeToShoppingList}
             />
           ))}
         </div>
