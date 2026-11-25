@@ -1,45 +1,78 @@
 .recipeLibraryCard {
-  background-color: #242424;
-  border: 1px solid #444;
-  border-radius: 15px;
-  padding: 24px;
-  min-width: 0;
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  padding: clamp(1em, 2.2cqw, 1.5em);
+  background-color: #242424;
+  border: 1px solid #444;
+  border-radius: clamp(0.75em, 1.5cqw, 1em);
+  overflow-wrap: anywhere;
 }
 
 .recipeLibraryCard h2 {
-  font-size: 24px;
-  color: white;
   margin-top: 0;
+  font-size: clamp(1.1em, 2.2cqw, 1.35em);
+  color: white;
 }
 
 .recipeLibraryCard h3 {
-  font-size: 18px;
+  font-size: clamp(0.95em, 1.7cqw, 1.1em);
   color: #aaa;
 }
 
 .recipeIngredients {
-  padding-left: 20px;
-  margin-bottom: 20px;
-  flex-grow: 1;
+  max-height: 8em;
+  margin: 0 0 clamp(0.75em, 2cqw, 1.25em);
+  padding-left: clamp(1em, 2cqw, 1.25em);
+  line-height: 1.5;
+  overflow-y: auto;
 }
 
 .recipeIngredients li {
-  margin-bottom: 8px;
+  margin-bottom: clamp(0.25em, 0.8cqw, 0.5em);
   color: #ccc;
 }
 
-.recipeLibraryCard button {
-  background-color: #646cff;
-  color: white;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 100%;
+.recipeLibraryCardActions {
+  display: grid;
+  gap: clamp(0.4em, 1cqw, 0.6em);
+  margin-top: auto;
 }
 
-.recipeLibraryCard button:hover {
+.recipeLibraryCardActions > * {
+  width: 100%;
+  padding: clamp(0.6em, 1.5cqw, 0.75em);
+  font: inherit;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  background-color: #646cff;
+  border: none;
+  border-radius: clamp(0.4em, 1cqw, 0.5em);
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.recipeLibraryCardActions > *:hover {
   background-color: #535bf2;
+}
+
+.recipeLibraryCardActions > .favoriteButton {
+  color: #e7d3b5;
+  background-color: #2f2f2f;
+  border: 1px solid #6b5a45;
+}
+
+.recipeLibraryCardActions > .favoriteButton:hover {
+  background-color: #3b3b3b;
+}
+
+.recipeLibraryCardActions > .favoriteButton.is-favorite {
+  color: #3a2a12;
+  background-color: #f6e2b8;
+  border-color: #c8962f;
+}
+
+.recipeLibraryCardActions > .favoriteButton.is-favorite:hover {
+  background-color: #ffeccb;
 }

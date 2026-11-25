@@ -23,7 +23,16 @@ export function RecipeProvider({ children }) {
       const updatedList = [...previousList];
 
       ingredients.forEach((item) => {
-        const ingredient = ingredientLibrary.find((i) => i.id === item.id);
+        const ingredient =
+          ingredientLibrary.find((i) => i.id === item.id) ??
+          (item.name
+            ? {
+                id: item.id,
+                name: item.name,
+                unit: item.unit ?? '',
+                category: item.category ?? 'Other',
+              }
+            : null);
         const quantity = Number(item.quantity);
 
         if (!ingredient || !Number.isFinite(quantity) || quantity <= 0) {
@@ -35,12 +44,16 @@ export function RecipeProvider({ children }) {
         if (existingIndex !== -1) {
           updatedList[existingIndex] = {
             ...updatedList[existingIndex],
+            name: item.name ?? updatedList[existingIndex].name,
+            unit: item.unit ?? updatedList[existingIndex].unit,
+            category: item.category ?? updatedList[existingIndex].category,
             quantity: updatedList[existingIndex].quantity + quantity,
             bought: false,
           };
         } else {
           updatedList.push({
             ...ingredient,
+            unit: item.unit ?? ingredient.unit,
             quantity,
             bought: false,
           });

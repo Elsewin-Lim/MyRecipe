@@ -1,0 +1,25 @@
+.myFavoritePage {
+  container-type: inline-size;
+  width: 100%;
+  max-width: min(100%, 62em);
+  margin: 0 auto;
+  padding-block: clamp(1em, 2.5%, 1.5em);
+  padding-inline: clamp(1em, 2.5%, 1.6em);
+  text-align: left;
+}
+
+.myFavoritePage > h1 {
+  margin: 0 0 0.35em;
+  font-size: clamp(1.6em, 5cqw, 3em);
+}
+
+.myFavoriteEmpty {
+  margin: clamp(1.5em, 4cqw, 2.5em) 0;
+}
+
+.favoriteRecipeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16em), 1fr));
+  gap: clamp(1em, 2.5cqw, 1.6em);
+  margin-top: clamp(1.25em, 3cqw, 2em);
+}

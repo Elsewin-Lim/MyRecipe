@@ -11,6 +11,7 @@
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 1;
   width: var(--book-page-width, 350px);
   height: var(--book-page-height, 500px);
   transform: scale(var(--book-page-scale, 1));

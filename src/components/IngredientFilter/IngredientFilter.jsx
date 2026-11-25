@@ -15,8 +15,8 @@ function IngredientFilter({
         <option value="All">All Ingredients</option>
 
         {ingredients.map((ingredient) => (
-          <option key={ingredient} value={ingredient}>
-            {ingredient}
+          <option key={ingredient.value} value={ingredient.value}>
+            {ingredient.label}
           </option>
         ))}
       </select>
